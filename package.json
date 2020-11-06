@@ -18,7 +18,7 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --ext .ts,.js",
     "lint:prettier": "prettier --check .",
-    "prepublishOnly": "npm run lint && npm run prettier && npm run test && npm run build",
+    "prepublishOnly": "npm run lint && npm run test && npm run build",
     "test": "jest --coverage",
     "watch": "rollup -cw"
   },
