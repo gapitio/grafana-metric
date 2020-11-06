@@ -1,6 +1,6 @@
 {
-  "name": "@gapit/component-template",
-  "description": "A template for making components",
+  "name": "@gapit/grafana-metric",
+  "description": "Retrieves metric value",
   "version": "0.0.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -22,7 +22,9 @@
     "test": "jest --coverage",
     "watch": "rollup -cw"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@grafana/data": "^7.2.2"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
@@ -48,13 +50,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gapitio/component-template.git"
+    "url": "git+https://github.com/gapitio/grafana-metric.git"
   },
-  "author": "Gapit",
+  "author": "https://github.com/gapitio",
   "bugs": {
-    "url": "https://github.com/gapitio/component-template/issues"
+    "url": "https://github.com/gapitio/grafana-metric/issues"
   },
-  "homepage": "https://github.com/gapitio/component-template#readme",
+  "homepage": "https://github.com/gapitio/grafana-metric#readme",
   "publishConfig": {
     "access": "public"
   }

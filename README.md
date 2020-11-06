@@ -1,26 +1,15 @@
-# Component name
+# HTMLGraphics metric
 
-A short description of the component
-
-E.g. This component adds two numbers together.
-It also has a variable and function that returns "something".
+Retrieves metric value from Grafana's [data interface](https://grafana.com/docs/grafana/latest/packages_api/data/paneldata/).
 
 ## Usage
 
-Description/example on how to use the component.
+### getMetricValueByName
 
-### add
-
-```ts
-import { add } from "@gapit/component-template";
-
-add(2, 3); // Returns 5
-```
-
-### SOMETHING_VARIABLE
+Retrieves last metric value based off of the name provided.
 
 ```ts
-import { SOMETHING_VARIABLE } from "@gapit/component-template";
+import { getMetricValueByName } from "@gapit/grafana-metric";
 
-console.log(SOMETHING_VARIABLE); // Returns "something
+getMetricValueByName("metric-name"); // Returns metric value
 ```

@@ -1,20 +1,32 @@
-import { SOMETHING_VARIABLE, somethingFunction } from "./something";
+import { PanelData } from "@grafana/data";
+
+declare const data: PanelData;
 
 /**
- * Adds x and y together.
+ * Gets a metric value by name/alias
  *
- * @example
- *
- * ```ts
- * add(2, 3); // Returns 5
- * ```
- *
- * @param {number} x - Number to be added together.
- * @param {number} y - Number to be added together.
- * @return {number} Returns the sum of x and y.
+ * @param {string} metricName
+ * @param {object} metricOptions
  */
-function add(x: number, y: number): number {
-  return x + y;
-}
+const getMetricValueByName = (
+  metricName: string,
+  {
+    noDataValue = null,
+  }: {
+    noDataValue?: unknown;
+  } = {}
+): unknown => {
+  const filteredSeries = data.series.filter(
+    (series) => series.name == metricName
+  );
+  if (filteredSeries.length > 0) {
+    const valueField = filteredSeries[0].fields[1];
 
-export { SOMETHING_VARIABLE, add, somethingFunction };
+    if (valueField && valueField.state && valueField.state.calcs) {
+      return valueField.state.calcs.last;
+    }
+  }
+  return noDataValue;
+};
+
+export { getMetricValueByName };

@@ -1,9 +1,7 @@
-# Changelog for component-template
+# Changelog for grafana-metric
 
 ## v0.0.0 (YYYY/MM/DD)
 
-### Breaking changes
-
 ### Features / enhancements
 
-### Bug fixes
+- Add getMetricValueByName which retrieves last metric value based off of the name provided.
