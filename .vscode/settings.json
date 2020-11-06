@@ -4,7 +4,5 @@
   "files.exclude": {
     "**/node_modules/*": true
   },
-  "cSpell.words": [
-    "grafana"
-  ]
+  "cSpell.words": ["grafana"]
 }
