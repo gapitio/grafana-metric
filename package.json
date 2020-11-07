@@ -22,10 +22,9 @@
     "test": "jest --coverage",
     "watch": "rollup -cw"
   },
-  "dependencies": {
-    "@grafana/data": "^7.2.2"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@grafana/data": "^7.3.1",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/jest": "^26.0.14",
