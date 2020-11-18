@@ -75,8 +75,7 @@ function getMetricValue(
   metric: string,
   showcase = false,
   range?: Array<number>,
-  decimals?: number,
-  noDataValue: unknown = null
+  decimals?: number
 ): unknown {
   /*
     Since the codeData is parsed as an Object in the plugin,
@@ -93,4 +92,4 @@ function getMetricValue(
   return getMetricValueByName(metric); // , noDataValue
 }
 
-export { getMetricValueByName, getMetricValue, getShowcaseMetricValue };
+export { getMetricValue, getMetricValueByName, getShowcaseMetricValue };
