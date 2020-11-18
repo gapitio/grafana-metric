@@ -77,19 +77,11 @@ function getMetricValue(
   range?: Array<number>,
   decimals?: number
 ): unknown {
-  /*
-    Since the codeData is parsed as an Object in the plugin,
-    it can be used as a normal javascript dictionary.
-  */
-
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   }
-  // else if (metric.includes('"') || metric.includes("'")) {
-  //   return getCalculationMetric(metric);
-  // }
 
-  return getMetricValueByName(metric); // , noDataValue
+  return getMetricValueByName(metric);
 }
 
 export { getMetricValue, getMetricValueByName, getShowcaseMetricValue };
