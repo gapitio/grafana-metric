@@ -21,7 +21,9 @@ function getShowcaseMetricValue({
   decimals?: number;
 } = {}): number {
   let value = Math.random();
-  const fixedValue = (value * range[1]).toFixed(decimals);
+  const fixedValue = (value * (range[1] - range[0]) + range[0]).toFixed(
+    decimals
+  );
   value = parseFloat(fixedValue);
   return value;
 }
@@ -60,7 +62,7 @@ const getMetricValueByName = (
  *
  * ```ts
  * getMetricValue("queryAlias") // Returns null if query is not executed.
- * getMetricValue("queryAlias", true); // Returns a random value between 0 and 2000000.
+ * getMetricValue("queryAlias", true); // Returns a random value between 0 and 1000.
  * getMetricValue("queryAlias", true, [1,10]); // Returns random value between 1-10.
  * getMetricValue("queryAlias", true, [1,10], true); // Returns random whole value between 1-10.
  * ```
