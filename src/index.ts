@@ -21,7 +21,9 @@ function getShowcaseMetricValue({
   decimals?: number;
 } = {}): number {
   let value = Math.random();
-  const fixedValue = (value * range[1]).toFixed(decimals);
+  const fixedValue = (value * (range[1] - range[0]) + range[0]).toFixed(
+    decimals
+  );
   value = parseFloat(fixedValue);
   return value;
 }
