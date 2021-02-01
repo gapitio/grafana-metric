@@ -1,5 +1,11 @@
 # Changelog for grafana-metric
 
+## v0.0.2 (2021/02/01)
+
+### Bug fixes
+
+- Fix missing noDataValue parameter
+
 ## v0.0.1 (2020/11/19)
 
 ### Features / enhancements
