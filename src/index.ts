@@ -71,19 +71,20 @@ const getMetricValueByName = (
  * @param showcase - Decides if values are randomly generated.
  * @param range - Range of values to return.
  * @param decimals - Amount of decimals returned.
- * @param noDataValue - Returns null if no data is found.
+ * @param noDataValue - Return value when no data is found.
  */
 function getMetricValue(
   metric: string,
   showcase = false,
   range?: Array<number>,
-  decimals?: number
+  decimals?: number,
+  noDataValue: unknown = null
 ): unknown {
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   }
 
-  return getMetricValueByName(metric);
+  return getMetricValueByName(metric, { noDataValue });
 }
 
 export { getMetricValue, getMetricValueByName, getShowcaseMetricValue };

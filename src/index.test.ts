@@ -63,6 +63,16 @@ describe("getMetricValue", () => {
     expect(getMetricValue("test", true)).toEqual(500);
     expect(getMetricValue("test", true, [0, 10], 2)).toEqual(5);
   });
+
+  it("returns noDataValue when no value is found", () => {
+    expect(getMetricValue("nonExistentName")).toBe(null);
+    expect(
+      getMetricValue("nonExistentName", false, [0, 100], 2, "something")
+    ).toBe("something");
+    expect(getMetricValue("minimal", false, [0, 100], 2, "something")).toBe(
+      "something"
+    );
+  });
 });
 
 describe("getShowcaseMetricValue", () => {
