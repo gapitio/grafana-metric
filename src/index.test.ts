@@ -8,6 +8,8 @@ import {
   getShowcaseMetricValue,
 } from "./index";
 
+console.log(Math.random());
+
 declare global {
   interface Window {
     data: PanelData;
@@ -50,23 +52,29 @@ describe("getMetricValueByName", () => {
 });
 
 describe("getMetricValue", () => {
+  beforeEach(() => {
+    jest.spyOn(global.Math, "random").mockReturnValue(0.5);
+  });
+
+  afterEach(() => {
+    jest.spyOn(global.Math, "random").mockRestore();
+  });
   it("retrieves correct value", () => {
-    expect(getMetricValue("test", true)).toBeGreaterThanOrEqual(0);
-    expect(getMetricValue("test", true)).toBeLessThanOrEqual(1000);
-    expect(getMetricValue("test", true, [0, 10], 2)).toBeGreaterThanOrEqual(0);
-    expect(getMetricValue("test", true, [0, 10], 2)).toBeLessThanOrEqual(10);
+    expect(getMetricValue("test", true)).toEqual(500);
+    expect(getMetricValue("test", true, [0, 10], 2)).toEqual(5);
   });
 });
 
 describe("getShowcaseMetricValue", () => {
+  beforeEach(() => {
+    jest.spyOn(global.Math, "random").mockReturnValue(0.5);
+  });
+
+  afterEach(() => {
+    jest.spyOn(global.Math, "random").mockRestore();
+  });
   it("retrieves correct value", () => {
-    expect(getShowcaseMetricValue()).toBeGreaterThanOrEqual(0);
-    expect(getShowcaseMetricValue()).toBeLessThanOrEqual(1000);
-    expect(
-      getShowcaseMetricValue({ range: [0, 10], decimals: 2 })
-    ).toBeGreaterThanOrEqual(0);
-    expect(
-      getShowcaseMetricValue({ range: [0, 10], decimals: 2 })
-    ).toBeLessThanOrEqual(10);
+    expect(getShowcaseMetricValue()).toEqual(500);
+    expect(getShowcaseMetricValue({ range: [0, 10], decimals: 2 })).toEqual(5);
   });
 });
