@@ -64,6 +64,11 @@ describe("getMetricValue", () => {
     expect(getMetricValue("test", true, [0, 10], 2)).toEqual(5);
   });
 
+  it("retrieves metric value", () => {
+    expect(getMetricValue("test")).toEqual(1000);
+    expect(getMetricValue("test", false, [0, 10], 2)).toEqual(1000);
+  });
+
   it("returns noDataValue when no value is found", () => {
     expect(getMetricValue("nonExistentName")).toBe(null);
     expect(
