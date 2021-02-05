@@ -9,17 +9,17 @@ declare const data: PanelData;
  *
  * @example
  *
- * getShowcaseMetricValue(); // Returns a value between 0 & 1000 with 2 decimals
- * getShowcaseMetricValue({ range: [ x, y ], decimals: z }); // Return a random value between x & y with z decimals.
+ * getShowcaseMetricValue(); // Returns a value between 0 and 1000 with 2 decimals
+ * getShowcaseMetricValue({ range: [ x, y ], decimals: z }); // Return a random value between x and y with z decimals.
  *
- * @param {Array<number>}range - Range of values to return
- * @param {number}decimals - Amount of decimals returned
+ * @param {[number, number]>} range - Range of values to return
+ * @param {number} decimals - Amount of decimals returned
  */
 function getShowcaseMetricValue({
   range = [0, 1000],
   decimals = 2,
 }: {
-  range?: Array<number>;
+  range?: [number, number];
   decimals?: number;
 } = {}): number {
   let value = Math.random();
@@ -39,6 +39,14 @@ export interface MetricOptions {
 
 /**
  * Gets a metric value by name/alias
+ *
+ * @example
+ *
+ * // metric-name = 100
+ *
+ * getMetricValueByName("metric-name") // Returns 100
+ * getMetricValueByName("non-existing-metric") // Returns null
+ * getMetricValueByName("non-existing-metric", { noDataValue: "No data" }) // Returns "No data"
  *
  * @param {string} metricName
  * @param {MetricOptions} metricOptions
@@ -61,27 +69,38 @@ const getMetricValueByName = (
 };
 
 /**
- * Function provides calculations for grafana queries.
+ * Function provides calculations for grafana queries
  *
  * @example
  *
- * ```ts
- * getMetricValue("queryAlias") // Returns null if query is not executed.
- * getMetricValue("queryAlias", true); // Returns a random value between 0 and 1000.
- * getMetricValue("queryAlias", true, [1,10]); // Returns random value between 1-10.
- * getMetricValue("queryAlias", true, [1,10], true); // Returns random whole value between 1-10.
- * ```
+ * // metric-name = 100
+ *
+ * // By name
+ * getMetricValue("metric-name") // Returns 100
+ *
+ * // No data
+ * getMetricValue("non-existing-metric") // Returns null
+ * getMetricValue("non-existing-metric", false, [0, 10], 2, "No data") // Returns "No data"
+ *
+ * // Evaluation string
+ * getMetricValue("'metric-name' * 2") // Returns 200
+ * getMetricValue("Math.sqrt('metric-name')") // Returns 10
+ *
+ * // Showcase
+ * getMetricValue("metric-name", true); // Returns a random value between 0 and 1000.
+ * getMetricValue("metric-name", true, [1, 10]); // Returns random value between 1-10.
+ * getMetricValue("metric-name", true, [1, 10], 4); // Returns random value between 1-10 with 4 decimals.
  *
  * @param metric - String for alias used in grafana query.
  * @param showcase - Decides if values are randomly generated.
- * @param range - Range of values to return.
- * @param decimals - Amount of decimals returned.
+ * @param range - Range of values to return (only with showcase)
+ * @param decimals - Amount of decimals returned (only with showcase)
  * @param noDataValue - Return value when no data is found.
  */
 function getMetricValue(
   metric: string,
   showcase = false,
-  range?: Array<number>,
+  range?: [number, number],
   decimals?: number,
   noDataValue: unknown = null
 ): unknown {

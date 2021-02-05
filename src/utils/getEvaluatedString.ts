@@ -5,10 +5,8 @@ import { getMetricValueByName } from "..";
  *
  * @example
  *
- * ```ts
  * evaluateString("2+2") // Returns 4
  * evaluateString("Math.sqrt(100)") // Returns 10
- * ```
  *
  * @param {string} string - Evaluation string ("10+3*5")
  * @return {unknown} Evaluated string
@@ -29,14 +27,13 @@ interface EvaluationOptions {
  *
  * @example
  *
- * ```ts
  * // random-metric = 100
+ *
  * getEvaluatedString("'random-metric' * 2") // Returns 200
  * getEvaluatedString("Math.sqrt('random-metric')") // Returns 10
- * ```
  *
  * @param {string} metricEvaluationString - The metric calculation string E.g "random-metric-1"+"random-metric-2"
- * @param {EvaluationOptions} options
+ * @param {EvaluationOptions} evaluationOptions
  * @return {unknown} Evaluated string
  */
 export function getEvaluatedString(
