@@ -59,7 +59,7 @@ describe("getMetricValue", () => {
   afterEach(() => {
     jest.spyOn(global.Math, "random").mockRestore();
   });
-  it("retrieves correct value", () => {
+  it("retrieves random value", () => {
     expect(getMetricValue("test", true)).toEqual(500);
     expect(getMetricValue("test", true, [0, 10], 2)).toEqual(5);
   });
