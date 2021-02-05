@@ -1,5 +1,7 @@
 import { PanelData } from "@grafana/data";
 
+import { getEvaluatedString } from "./utils/getEvaluatedString";
+
 declare const data: PanelData;
 
 /**
@@ -82,9 +84,16 @@ function getMetricValue(
 ): unknown {
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
+  } else if (metric.includes('"') || metric.includes("'")) {
+    return getEvaluatedString(metric);
   }
 
   return getMetricValueByName(metric, { noDataValue });
 }
 
-export { getMetricValue, getMetricValueByName, getShowcaseMetricValue };
+export {
+  getEvaluatedString,
+  getMetricValue,
+  getMetricValueByName,
+  getShowcaseMetricValue,
+};

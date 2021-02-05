@@ -8,8 +8,6 @@ import {
   getShowcaseMetricValue,
 } from "./index";
 
-console.log(Math.random());
-
 declare global {
   interface Window {
     data: PanelData;
@@ -23,6 +21,8 @@ window.data = {
     createSeries("test", 2),
     createSeries("something", 2000),
     createSeries("something", 2000),
+    createSeries("series-1", 100),
+    createSeries("series-2", 200),
     createMinimalSeries("minimal"),
   ],
   timeRange: {
@@ -72,6 +72,10 @@ describe("getMetricValue", () => {
     expect(getMetricValue("minimal", false, [0, 100], 2, "something")).toBe(
       "something"
     );
+  });
+
+  it("evaluates string", () => {
+    expect(getMetricValue("'series-1'+'series-2'")).toBe(300);
   });
 });
 
