@@ -13,7 +13,7 @@
 - Add getShowcaseMetricValue which returns a value between a set range of numbers with a set amount of decimals.
 - Add getMetricValue which decides what function to run.
 
-## v0.0.0 (YYYY/MM/DD)
+## v0.0.0 (2020/11/06)
 
 ### Features / enhancements
 
