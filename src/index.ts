@@ -30,19 +30,22 @@ function getShowcaseMetricValue({
   return value;
 }
 
+export interface MetricOptions {
+  /**
+   * Return value when no data is found.
+   */
+  noDataValue?: unknown;
+}
+
 /**
  * Gets a metric value by name/alias
  *
  * @param {string} metricName
- * @param {object} metricOptions
+ * @param {MetricOptions} metricOptions
  */
 const getMetricValueByName = (
   metricName: string,
-  {
-    noDataValue = null,
-  }: {
-    noDataValue?: unknown;
-  } = {}
+  { noDataValue = null }: MetricOptions = {}
 ): unknown => {
   const filteredSeries = data.series.filter(
     (series) => series.name == metricName
