@@ -36,7 +36,7 @@ window.data = {
 };
 
 describe("getMetricValueByName", () => {
-  it("retrieves correct value", () => {
+  it("retrieves metric value", () => {
     expect(getMetricValueByName("test", {})).toBe(1000);
   });
 
@@ -92,7 +92,7 @@ describe("getShowcaseMetricValue", () => {
   afterEach(() => {
     jest.spyOn(global.Math, "random").mockRestore();
   });
-  it("retrieves correct value", () => {
+  it("retrieves random value", () => {
     expect(getShowcaseMetricValue()).toEqual(500);
     expect(getShowcaseMetricValue({ range: [0, 10], decimals: 2 })).toEqual(5);
   });
