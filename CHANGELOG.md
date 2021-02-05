@@ -1,5 +1,12 @@
 # Changelog for grafana-metric
 
+## v0.1.0 (2021/02/05)
+
+### Features / enhancements
+
+- Add getEvaluationString which evaluates a string with metric names
+- Add better descriptions and examples
+
 ## v0.0.2 (2021/02/01)
 
 ### Bug fixes
