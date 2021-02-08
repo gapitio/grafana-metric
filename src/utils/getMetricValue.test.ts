@@ -1,12 +1,8 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { createMinimalSeries, createSeries } from "./__mocks__/create-series";
+import { createMinimalSeries, createSeries } from "../__mocks__/create-series";
 
-import {
-  getMetricValue,
-  getMetricValueByName,
-  getShowcaseMetricValue,
-} from "./index";
+import { getMetricValue } from "./getMetricValue";
 
 declare global {
   interface Window {
@@ -34,22 +30,6 @@ window.data = {
     },
   },
 };
-
-describe("getMetricValueByName", () => {
-  it("retrieves metric value", () => {
-    expect(getMetricValueByName("test", {})).toBe(1000);
-  });
-
-  it("returns noDataValue when no value is found", () => {
-    expect(getMetricValueByName("nonExistentName")).toBe(null);
-    expect(
-      getMetricValueByName("nonExistentName", { noDataValue: "something" })
-    ).toBe("something");
-    expect(getMetricValueByName("minimal", { noDataValue: "something" })).toBe(
-      "something"
-    );
-  });
-});
 
 describe("getMetricValue", () => {
   beforeEach(() => {
@@ -81,19 +61,5 @@ describe("getMetricValue", () => {
 
   it("evaluates string", () => {
     expect(getMetricValue("'series-1'+'series-2'")).toBe(300);
-  });
-});
-
-describe("getShowcaseMetricValue", () => {
-  beforeEach(() => {
-    jest.spyOn(global.Math, "random").mockReturnValue(0.5);
-  });
-
-  afterEach(() => {
-    jest.spyOn(global.Math, "random").mockRestore();
-  });
-  it("retrieves random value", () => {
-    expect(getShowcaseMetricValue()).toEqual(500);
-    expect(getShowcaseMetricValue({ range: [0, 10], decimals: 2 })).toEqual(5);
   });
 });
