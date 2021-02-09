@@ -1,7 +1,6 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { createMinimalSeries, createSeries } from "../__mocks__/create-series";
-
+import { TIME_FIELD, valueField } from "./field";
 import { getMetricValue } from "./getMetricValue";
 
 declare global {
@@ -13,13 +12,21 @@ declare global {
 window.data = {
   state: LoadingState.Done,
   series: [
-    createSeries("test", 1000),
-    createSeries("test", 2),
-    createSeries("something", 2000),
-    createSeries("something", 2000),
-    createSeries("series-1", 100),
-    createSeries("series-2", 200),
-    createMinimalSeries("minimal"),
+    {
+      name: "series-1",
+      fields: [TIME_FIELD, valueField(100)],
+      length: 1,
+    },
+    {
+      name: "series-2",
+      fields: [TIME_FIELD, valueField(200)],
+      length: 1,
+    },
+    {
+      name: "series-3",
+      fields: [TIME_FIELD, valueField(300)],
+      length: 1,
+    },
   ],
   timeRange: {
     from: dateTime(0),
@@ -40,13 +47,13 @@ describe("getMetricValue", () => {
     jest.spyOn(global.Math, "random").mockRestore();
   });
   it("retrieves random value", () => {
-    expect(getMetricValue("test", true)).toEqual(500);
-    expect(getMetricValue("test", true, [0, 10], 2)).toEqual(5);
+    expect(getMetricValue("series-2", true)).toEqual(500);
+    expect(getMetricValue("series-2", true, [0, 10], 2)).toEqual(5);
   });
 
   it("retrieves metric value", () => {
-    expect(getMetricValue("test")).toEqual(1000);
-    expect(getMetricValue("test", false, [0, 10], 2)).toEqual(1000);
+    expect(getMetricValue("series-2")).toEqual(200);
+    expect(getMetricValue("series-2", false, [0, 10], 2)).toEqual(200);
   });
 
   it("returns noDataValue when no value is found", () => {

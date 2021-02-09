@@ -1,7 +1,6 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { createMinimalSeries, createSeries } from "../__mocks__/create-series";
-
+import { TIME_FIELD, valueField } from "./field";
 import { getMetricValueByName } from "./getMetricValueByName";
 
 declare global {
@@ -13,13 +12,16 @@ declare global {
 window.data = {
   state: LoadingState.Done,
   series: [
-    createSeries("test", 1000),
-    createSeries("test", 2),
-    createSeries("something", 2000),
-    createSeries("something", 2000),
-    createSeries("series-1", 100),
-    createSeries("series-2", 200),
-    createMinimalSeries("minimal"),
+    {
+      name: "test",
+      fields: [TIME_FIELD, valueField(1000)],
+      length: 1,
+    },
+    {
+      name: "minimal",
+      fields: [],
+      length: 1,
+    },
   ],
   timeRange: {
     from: dateTime(0),

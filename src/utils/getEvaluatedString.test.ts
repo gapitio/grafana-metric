@@ -1,7 +1,6 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { createSeries } from "../__mocks__/create-series";
-
+import { TIME_FIELD, valueField } from "./field";
 import { getEvaluatedString } from "./getEvaluatedString";
 
 declare global {
@@ -12,7 +11,18 @@ declare global {
 
 window.data = {
   state: LoadingState.Done,
-  series: [createSeries("series-1", 100), createSeries("series-2", 200)],
+  series: [
+    {
+      name: "series-1",
+      fields: [TIME_FIELD, valueField(100)],
+      length: 1,
+    },
+    {
+      name: "series-2",
+      fields: [TIME_FIELD, valueField(200)],
+      length: 1,
+    },
+  ],
   timeRange: {
     from: dateTime(0),
     to: dateTime(0),
