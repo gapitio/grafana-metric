@@ -1,6 +1,17 @@
-import { PanelData } from "@grafana/data";
+import { Field, PanelData } from "@grafana/data";
 
 declare const data: PanelData;
+
+function getSeriesByName(seriesName: string) {
+  return data.series.find((series) => series.name == seriesName);
+}
+
+function getFieldByName(fieldName: string): Field | undefined {
+  for (const series of data.series) {
+    const valueField = series.fields.find((field) => field.name == fieldName);
+    if (valueField) return valueField;
+  }
+}
 
 export interface MetricOptions {
   /**
@@ -27,15 +38,8 @@ export function getMetricValueByName(
   metricName: string,
   { noDataValue = null }: MetricOptions = {}
 ): unknown {
-  const filteredSeries = data.series.filter(
-    (series) => series.name == metricName
-  );
-  if (filteredSeries.length > 0) {
-    const valueField = filteredSeries[0].fields[1];
+  const series = getSeriesByName(metricName);
+  const valueField = series ? series.fields[1] : getFieldByName(metricName);
 
-    if (valueField && valueField.state && valueField.state.calcs) {
-      return valueField.state.calcs.last;
-    }
-  }
-  return noDataValue;
+  return valueField?.state?.calcs?.last ?? noDataValue;
 }
