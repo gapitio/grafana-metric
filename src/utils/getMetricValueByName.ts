@@ -39,12 +39,7 @@ export function getMetricValueByName(
   { noDataValue = null }: MetricOptions = {}
 ): unknown {
   const series = getSeriesByName(metricName);
-
   const valueField = series ? series.fields[1] : getFieldByName(metricName);
 
-  if (valueField && valueField.state && valueField.state.calcs) {
-    return valueField.state.calcs.last;
-  }
-
-  return noDataValue;
+  return valueField?.state?.calcs?.last ?? noDataValue;
 }
