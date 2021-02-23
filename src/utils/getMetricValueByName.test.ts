@@ -41,6 +41,12 @@ window.data = {
           type: FieldType.number,
           calcs: { [ReducerID.last]: 200 },
         }),
+        field({
+          name: "Value",
+          type: FieldType.number,
+          calcs: { [ReducerID.last]: 300 },
+          labels: { name: "label-1" },
+        }),
       ],
       length: 1,
     },
@@ -71,8 +77,14 @@ describe("getMetricValueByName", () => {
   });
 
   describe("field name", () => {
-    it("gets correct value from field names", () => {
+    it("gets correct value from field name", () => {
       expect(getMetricValueByName("field-1")).toEqual(100);
+    });
+  });
+
+  describe("label name", () => {
+    it("gets correct value from label name", () => {
+      expect(getMetricValueByName("label-1")).toEqual(300);
     });
   });
 });

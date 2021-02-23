@@ -1,4 +1,4 @@
-import { Field, FieldCalcs, FieldType, ReducerID } from "@grafana/data";
+import { Field, FieldCalcs, FieldType, Labels, ReducerID } from "@grafana/data";
 
 export const TIME_FIELD = field({
   name: "Time",
@@ -10,15 +10,18 @@ export function field({
   name,
   type,
   calcs,
+  labels,
 }: {
   name: string;
   type: FieldType;
   calcs: FieldCalcs;
+  labels?: Labels;
 }): Field {
   return {
     name,
     type,
     config: {},
+    labels: labels,
     values: {
       length: 0,
       get: (index: number) => {
