@@ -8,9 +8,7 @@ function getSeriesByName(seriesName: string) {
 
 function getFieldByName(fieldName: string): Field | undefined {
   for (const series of data.series) {
-    const valueField = series.fields.find((field) => {
-      return field.name == fieldName;
-    });
+    const valueField = series.fields.find((field) => field.name == fieldName);
     if (valueField) return valueField;
   }
 }
