@@ -1,5 +1,13 @@
 # Changelog for grafana-metric
 
+## v0.2.0 (2021/02/05)
+
+### Features / enhancements
+
+- Add get metric from field names [#5](https://github.com/gapitio/grafana-metric/pull/5)
+- Add get metric from label [#6](https://github.com/gapitio/grafana-metric/pull/6)
+- Export unused functions (getFieldByName, getSeriesByName, getValueField) [#10](https://github.com/gapitio/grafana-metric/pull/10)
+
 ## v0.1.0 (2021/02/05)
 
 ### Features / enhancements
