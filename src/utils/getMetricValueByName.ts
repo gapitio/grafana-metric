@@ -33,7 +33,7 @@ function getValueField(fields: Field[]): Field | undefined {
   return fields.find((field) => field.name == "Value");
 }
 
-interface MetricOptions {
+export interface MetricOptions {
   /**
    * Return value when no data is found.
    */
