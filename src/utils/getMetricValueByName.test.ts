@@ -1,12 +1,6 @@
-import {
-  FieldType,
-  LoadingState,
-  PanelData,
-  ReducerID,
-  dateTime,
-} from "@grafana/data";
+import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { TIME_FIELD, field, valueField } from "./field";
+import { ReducerID, TIME_FIELD, field, valueField } from "./field";
 import { getMetricValueByName } from "./getMetricValueByName";
 
 declare global {

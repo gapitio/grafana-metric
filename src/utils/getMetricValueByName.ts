@@ -1,5 +1,7 @@
 import { DataFrame, Field, PanelData } from "@grafana/data";
 
+import { ReducerID } from "./field";
+
 declare const data: PanelData;
 
 /**
@@ -87,5 +89,5 @@ export function getMetricValueByName(
     ? getValueField(series.fields)
     : getFieldByName(metricName);
 
-  return valueField?.state?.calcs?.last ?? noDataValue;
+  return valueField?.state?.calcs?.[ReducerID.last] ?? noDataValue;
 }

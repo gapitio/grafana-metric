@@ -1,4 +1,25 @@
-import { Field, FieldCalcs, FieldType, Labels, ReducerID } from "@grafana/data";
+import { Field, FieldCalcs, FieldType, Labels } from "@grafana/data";
+
+export const enum ReducerID {
+  sum = "sum",
+  max = "max",
+  min = "min",
+  logmin = "logmin",
+  mean = "mean",
+  last = "last",
+  first = "first",
+  count = "count",
+  range = "range",
+  diff = "diff",
+  delta = "delta",
+  step = "step",
+  firstNotNull = "firstNotNull",
+  lastNotNull = "lastNotNull",
+  changeCount = "changeCount",
+  distinctCount = "distinctCount",
+  allIsZero = "allIsZero",
+  allIsNull = "allIsNull",
+}
 
 export const TIME_FIELD = field({
   name: "Time",
