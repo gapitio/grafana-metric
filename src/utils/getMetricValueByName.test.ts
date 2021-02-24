@@ -62,10 +62,6 @@ window.data = {
 };
 
 describe("getMetricValueByName", () => {
-  it("retrieves metric value", () => {
-    expect(getMetricValueByName("series-1", {})).toBe(1000);
-  });
-
   it("returns noDataValue when no value is found", () => {
     expect(getMetricValueByName("nonExistentName")).toBe(null);
     expect(
@@ -74,6 +70,12 @@ describe("getMetricValueByName", () => {
     expect(getMetricValueByName("minimal", { noDataValue: "something" })).toBe(
       "something"
     );
+  });
+
+  describe("series name", () => {
+    it("gets correct value from field name", () => {
+      expect(getMetricValueByName("series-1", {})).toBe(1000);
+    });
   });
 
   describe("field name", () => {

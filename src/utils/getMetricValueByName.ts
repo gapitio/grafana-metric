@@ -1,12 +1,36 @@
-import { Field, PanelData } from "@grafana/data";
+import { DataFrame, Field, PanelData } from "@grafana/data";
 
 declare const data: PanelData;
 
-function getSeriesByName(seriesName: string) {
+/**
+ * Gets the series that contains the seriesName
+ *
+ * @example
+ * ```ts
+ * getSeriesByName("series-name");
+ * ```
+ *
+ * @param seriesName
+ *
+ * @returns The series that contains the seriesName
+ */
+export function getSeriesByName(seriesName: string): DataFrame | undefined {
   return data.series.find((series) => series.name == seriesName);
 }
 
-function getFieldByName(fieldName: string): Field | undefined {
+/**
+ * Gets the field that contains the fieldName
+ *
+ * @example
+ * ```ts
+ * getFieldByName("field-name");
+ * ```
+ *
+ * @param fieldName
+ *
+ * @returns The field that contains the fieldName
+ */
+export function getFieldByName(fieldName: string): Field | undefined {
   for (const series of data.series) {
     const valueField = series.fields.find((field) =>
       [field.name, ...(field.labels ? [field.labels.name] : [])].includes(
@@ -29,7 +53,7 @@ function getFieldByName(fieldName: string): Field | undefined {
  *
  * @returns Value field
  */
-function getValueField(fields: Field[]): Field | undefined {
+export function getValueField(fields: Field[]): Field | undefined {
   return fields.find((field) => field.name == "Value");
 }
 
