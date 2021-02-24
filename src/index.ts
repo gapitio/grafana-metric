@@ -1,3 +1,4 @@
+import { ReducerID } from "./utils/field";
 import { getEvaluatedString } from "./utils/getEvaluatedString";
 import { getMetricValue } from "./utils/getMetricValue";
 import {
@@ -9,6 +10,7 @@ import {
 import { getShowcaseMetricValue } from "./utils/getShowcaseMetricValue";
 
 export {
+  ReducerID,
   getEvaluatedString,
   getMetricValue,
   getFieldByName,
