@@ -17,7 +17,23 @@ function getFieldByName(fieldName: string): Field | undefined {
   }
 }
 
-export interface MetricOptions {
+/**
+ * Finds the value field
+ *
+ * @example
+ * ```ts
+ * getValueField(series.fields);
+ * ```
+ *
+ * @param fields - Fields object
+ *
+ * @returns Value field
+ */
+function getValueField(fields: Field[]): Field | undefined {
+  return fields.find((field) => field.name == "Value");
+}
+
+interface MetricOptions {
   /**
    * Return value when no data is found.
    */
@@ -43,7 +59,9 @@ export function getMetricValueByName(
   { noDataValue = null }: MetricOptions = {}
 ): unknown {
   const series = getSeriesByName(metricName);
-  const valueField = series ? series.fields[1] : getFieldByName(metricName);
+  const valueField = series
+    ? getValueField(series.fields)
+    : getFieldByName(metricName);
 
   return valueField?.state?.calcs?.last ?? noDataValue;
 }
