@@ -25,7 +25,7 @@ export function getMetricValueFromExpression(
 ): unknown {
   let isNoData = false;
   // Replace the metric names the with metric value
-  const splitMetricCalculation = metricExpression.replace(
+  const expression = metricExpression.replace(
     /["']([^"']*)["']/g,
     (metricName) => {
       const value = getMetricValueFromName(metricName.replace(/["']/g, ""), {
@@ -40,5 +40,5 @@ export function getMetricValueFromExpression(
   if (isNoData) {
     return noDataValue;
   }
-  return evaluateString(splitMetricCalculation);
+  return evaluateString(expression);
 }
