@@ -1,7 +1,8 @@
 import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { ReducerID, TIME_FIELD, field, valueField } from "./field";
-import { getMetricValueByName } from "./getMetricValueByName";
+import { ReducerID, TIME_FIELD, field, valueField } from "../field";
+
+import { getMetricValueFromName } from "./getMetricValueFromName";
 
 declare global {
   interface Window {
@@ -55,32 +56,32 @@ window.data = {
   },
 };
 
-describe("getMetricValueByName", () => {
+describe("getMetricValueFromName", () => {
   it("returns noDataValue when no value is found", () => {
-    expect(getMetricValueByName("nonExistentName")).toBe(null);
+    expect(getMetricValueFromName("nonExistentName")).toBe(null);
     expect(
-      getMetricValueByName("nonExistentName", { noDataValue: "something" })
+      getMetricValueFromName("nonExistentName", { noDataValue: "something" })
     ).toBe("something");
-    expect(getMetricValueByName("minimal", { noDataValue: "something" })).toBe(
-      "something"
-    );
+    expect(
+      getMetricValueFromName("minimal", { noDataValue: "something" })
+    ).toBe("something");
   });
 
   describe("series name", () => {
     it("gets correct value from field name", () => {
-      expect(getMetricValueByName("series-1", {})).toBe(1000);
+      expect(getMetricValueFromName("series-1", {})).toBe(1000);
     });
   });
 
   describe("field name", () => {
     it("gets correct value from field name", () => {
-      expect(getMetricValueByName("field-1")).toEqual(100);
+      expect(getMetricValueFromName("field-1")).toEqual(100);
     });
   });
 
   describe("label name", () => {
     it("gets correct value from label name", () => {
-      expect(getMetricValueByName("label-1")).toEqual(300);
+      expect(getMetricValueFromName("label-1")).toEqual(300);
     });
   });
 });

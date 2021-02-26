@@ -1,5 +1,5 @@
-import { getEvaluatedString } from "./getEvaluatedString";
-import { getMetricValueByName } from "./getMetricValueByName";
+import { getMetricValueFromExpression } from "./getMetricValueFromExpression";
+import { getMetricValueFromName } from "./getMetricValueFromName";
 import { getShowcaseMetricValue } from "./getShowcaseMetricValue";
 
 /**
@@ -41,8 +41,8 @@ export function getMetricValue(
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   } else if (metric.includes('"') || metric.includes("'")) {
-    return getEvaluatedString(metric);
+    return getMetricValueFromExpression(metric);
   }
 
-  return getMetricValueByName(metric, { noDataValue });
+  return getMetricValueFromName(metric, { noDataValue });
 }
