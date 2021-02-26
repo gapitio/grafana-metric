@@ -1,8 +1,8 @@
-import { LoadingState, PanelData, dateTime } from "@grafana/data";
+import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { TIME_FIELD, valueField } from "../field";
+import { ReducerID, TIME_FIELD, field, valueField } from "../field";
 
-import { getEvaluatedString } from "./getMetricValueFromExpression";
+import { getMetricValueFromExpression } from "./getMetricValueFromExpression";
 
 declare global {
   interface Window {
@@ -23,6 +23,18 @@ window.data = {
       fields: [TIME_FIELD, valueField(200)],
       length: 1,
     },
+    {
+      name: "series-3",
+      fields: [
+        TIME_FIELD,
+        field({
+          name: "Value",
+          type: FieldType.number,
+          calcs: { [ReducerID.last]: 100, [ReducerID.first]: 500 },
+        }),
+      ],
+      length: 1,
+    },
   ],
   timeRange: {
     from: dateTime(0),
@@ -34,24 +46,36 @@ window.data = {
   },
 };
 
-describe("getEvaluatedString", () => {
+describe("getMetricValueFromExpression", () => {
   it("retrieves correct value", () => {
-    expect(getEvaluatedString("'series-1'+'series-2'")).toEqual(300);
-    expect(getEvaluatedString('"series-1"+"series-2"')).toEqual(300);
-    expect(getEvaluatedString("'series-1'")).toEqual(100);
+    expect(getMetricValueFromExpression("'series-1'+'series-2'")).toEqual(300);
+    expect(getMetricValueFromExpression('"series-1"+"series-2"')).toEqual(300);
+    expect(getMetricValueFromExpression("'series-1'")).toEqual(100);
   });
 
   it("can use Math", () => {
-    expect(getEvaluatedString("Math.sqrt('series-1')")).toEqual(10);
-    expect(getEvaluatedString("Math.max('series-1', 1000)")).toEqual(1000);
+    expect(getMetricValueFromExpression("Math.sqrt('series-1')")).toEqual(10);
+    expect(getMetricValueFromExpression("Math.max('series-1', 1000)")).toEqual(
+      1000
+    );
   });
 
   it("returns noDataValue", () => {
-    expect(getEvaluatedString("'nonExistentName' + 'series-1'")).toEqual(null);
     expect(
-      getEvaluatedString("Math.sqrt('nonExistentName')", {
+      getMetricValueFromExpression("'nonExistentName' + 'series-1'")
+    ).toEqual(null);
+    expect(
+      getMetricValueFromExpression("Math.sqrt('nonExistentName')", {
         noDataValue: "No data",
       })
     ).toEqual("No data");
+  });
+
+  it("returns value based on reducerID", () => {
+    expect(
+      getMetricValueFromExpression("'series-3' * 2", {
+        reducerID: ReducerID.first,
+      })
+    ).toEqual(1000);
   });
 });

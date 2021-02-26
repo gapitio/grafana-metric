@@ -25,6 +25,12 @@ export const TIME_FIELD = field({
   name: "Time",
   type: FieldType.time,
   calcs: {},
+  values: [
+    // Epoch timestamps
+    1577836800, // 2020/1/1
+    1593561600, // 2020/7/1
+    1609372800, // 2020/12/31
+  ],
 });
 
 export function field({
@@ -32,11 +38,13 @@ export function field({
   type,
   calcs,
   labels,
+  values = [],
 }: {
   name: string;
   type: FieldType;
   calcs: FieldCalcs;
   labels?: Labels;
+  values?: number[];
 }): Field {
   return {
     name,
@@ -44,11 +52,11 @@ export function field({
     config: {},
     labels: labels,
     values: {
-      length: 0,
+      length: values.length,
       get: (index: number) => {
-        return [][index];
+        return values[index];
       },
-      toArray: () => [],
+      toArray: () => values,
     },
     state: {
       displayName: null,

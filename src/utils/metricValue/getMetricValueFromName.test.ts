@@ -2,7 +2,7 @@ import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
 import { ReducerID, TIME_FIELD, field, valueField } from "../field";
 
-import { getMetricValueByName } from "./getMetricValueFromName";
+import { getMetricValueFromName } from "./getMetricValueFromName";
 
 declare global {
   interface Window {
@@ -29,7 +29,7 @@ window.data = {
         field({
           name: "field-1",
           type: FieldType.number,
-          calcs: { [ReducerID.last]: 100 },
+          calcs: { [ReducerID.last]: 100, [ReducerID.first]: 500 },
         }),
         field({
           name: "field-2",
@@ -56,32 +56,43 @@ window.data = {
   },
 };
 
-describe("getMetricValueByName", () => {
+describe("getMetricValueFromName", () => {
   it("returns noDataValue when no value is found", () => {
-    expect(getMetricValueByName("nonExistentName")).toBe(null);
+    expect(getMetricValueFromName("nonExistentName")).toBe(null);
     expect(
-      getMetricValueByName("nonExistentName", { noDataValue: "something" })
+      getMetricValueFromName("nonExistentName", { noDataValue: "something" })
     ).toBe("something");
-    expect(getMetricValueByName("minimal", { noDataValue: "something" })).toBe(
-      "something"
-    );
+    expect(
+      getMetricValueFromName("minimal", { noDataValue: "something" })
+    ).toBe("something");
+  });
+
+  describe("reducer id", () => {
+    it("gets last value from field", () => {
+      expect(getMetricValueFromName("field-1")).toBe(100);
+    });
+    it("gets first value from field", () => {
+      expect(
+        getMetricValueFromName("field-1", { reducerID: ReducerID.first })
+      ).toBe(500);
+    });
   });
 
   describe("series name", () => {
     it("gets correct value from field name", () => {
-      expect(getMetricValueByName("series-1", {})).toBe(1000);
+      expect(getMetricValueFromName("series-1", {})).toBe(1000);
     });
   });
 
   describe("field name", () => {
     it("gets correct value from field name", () => {
-      expect(getMetricValueByName("field-1")).toEqual(100);
+      expect(getMetricValueFromName("field-1")).toEqual(100);
     });
   });
 
   describe("label name", () => {
     it("gets correct value from label name", () => {
-      expect(getMetricValueByName("label-1")).toEqual(300);
+      expect(getMetricValueFromName("label-1")).toEqual(300);
     });
   });
 });

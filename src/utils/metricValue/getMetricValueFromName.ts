@@ -9,14 +9,14 @@ declare const data: PanelData;
  *
  * @example
  * ```ts
- * getSeriesByName("series-name");
+ * getSeriesFromName("series-name");
  * ```
  *
  * @param seriesName
  *
  * @returns The series that contains the seriesName
  */
-export function getSeriesByName(seriesName: string): DataFrame | undefined {
+export function getSeriesFromName(seriesName: string): DataFrame | undefined {
   return data.series.find((series) => series.name == seriesName);
 }
 
@@ -25,14 +25,14 @@ export function getSeriesByName(seriesName: string): DataFrame | undefined {
  *
  * @example
  * ```ts
- * getFieldByName("field-name");
+ * getFieldFromName("field-name");
  * ```
  *
  * @param fieldName
  *
  * @returns The field that contains the fieldName
  */
-export function getFieldByName(fieldName: string): Field | undefined {
+export function getFieldFromName(fieldName: string): Field | undefined {
   for (const series of data.series) {
     const valueField = series.fields.find((field) =>
       [field.name, ...(field.labels ? [field.labels.name] : [])].includes(
@@ -59,35 +59,50 @@ export function getValueField(fields: Field[]): Field | undefined {
   return fields.find((field) => field.name == "Value");
 }
 
-export interface MetricOptions {
+export interface MetricValueFromNameOptions {
   /**
    * Return value when no data is found.
+   *
+   * @default null
    */
   noDataValue?: unknown;
+
+  /**
+   * The calcs key ("last", "first", "max", ReducerID.min)
+   *
+   * @example
+   * getMetricValueFromName("metric-name", {reducerID: ReducerID.first})
+   *
+   * @default ReducerID.last // "last"
+   */
+  reducerID?: string;
 }
 
 /**
- * Gets a metric value by name/alias
+ * Gets a metric value from name/alias
  *
  * @example
  *
  * // metric-name = 100
  *
- * getMetricValueByName("metric-name") // Returns 100
- * getMetricValueByName("non-existing-metric") // Returns null
- * getMetricValueByName("non-existing-metric", { noDataValue: "No data" }) // Returns "No data"
+ * getMetricValueFromName("metric-name") // Returns 100
+ * getMetricValueFromName("non-existing-metric") // Returns null
+ * getMetricValueFromName("non-existing-metric", { noDataValue: "No data" }) // Returns "No data"
  *
  * @param {string} metricName
  * @param {MetricOptions} metricOptions
  */
-export function getMetricValueByName(
+export function getMetricValueFromName(
   metricName: string,
-  { noDataValue = null }: MetricOptions = {}
+  {
+    noDataValue = null,
+    reducerID = ReducerID.last,
+  }: MetricValueFromNameOptions = {}
 ): unknown {
-  const series = getSeriesByName(metricName);
+  const series = getSeriesFromName(metricName);
   const valueField = series
     ? getValueField(series.fields)
-    : getFieldByName(metricName);
+    : getFieldFromName(metricName);
 
-  return valueField?.state?.calcs?.[ReducerID.last] ?? noDataValue;
+  return valueField?.state?.calcs?.[reducerID] ?? noDataValue;
 }

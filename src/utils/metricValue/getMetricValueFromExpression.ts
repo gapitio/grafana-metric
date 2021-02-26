@@ -1,52 +1,35 @@
-import { getMetricValueByName } from "./getMetricValueFromName";
+import { evaluateString } from "../evaluateString";
+
+import {
+  MetricValueFromNameOptions,
+  getMetricValueFromName,
+} from "./getMetricValueFromName";
+
+export type MetricValueFromExpressionOptions = MetricValueFromNameOptions;
 
 /**
- * Evaluates a string
+ * Evaluates a metric expression
  *
  * @example
- *
- * evaluateString("2+2") // Returns 4
- * evaluateString("Math.sqrt(100)") // Returns 10
- *
- * @param {string} string - Evaluation string ("10+3*5")
- * @return {unknown} Evaluated string
- */
-export function evaluateString(string: string): unknown {
-  return new Function("return " + string)();
-}
-
-interface EvaluationOptions {
-  /**
-   * Return value when no data is found.
-   */
-  noDataValue?: unknown;
-}
-
-/**
- * Evaluates a metric string
- *
- * @example
- *
  * // random-metric = 100
  *
- * getEvaluatedString("'random-metric' * 2") // Returns 200
- * getEvaluatedString("Math.sqrt('random-metric')") // Returns 10
+ * getMetricValueFromExpression("'random-metric' * 2") // Returns 200
+ * getMetricValueFromExpression("Math.sqrt('random-metric')") // Returns 10
  *
- * @param {string} metricEvaluationString - The metric calculation string E.g "random-metric-1"+"random-metric-2"
- * @param {EvaluationOptions} evaluationOptions
- * @return {unknown} Evaluated string
+ * @param {string} metricExpression - The metric expression E.g "random-metric-1"+"random-metric-2"
+ * @param {MetricValueFromExpressionOptions} MetricValueFromExpressionOptions
  */
-export function getEvaluatedString(
-  metricEvaluationString: string,
-  { noDataValue = null }: EvaluationOptions = {}
+export function getMetricValueFromExpression(
+  metricExpression: string,
+  { noDataValue = null, reducerID }: MetricValueFromExpressionOptions = {}
 ): unknown {
   let isNoData = false;
   // Replace the metric names the with metric value
-  const splitMetricCalculation = metricEvaluationString.replace(
+  const expression = metricExpression.replace(
     /["']([^"']*)["']/g,
     (metricName) => {
-      const value = getMetricValueByName(metricName.replace(/["']/g, ""), {
-        noDataValue: null,
+      const value = getMetricValueFromName(metricName.replace(/["']/g, ""), {
+        reducerID,
       });
       if (value == null) {
         isNoData = true;
@@ -57,5 +40,5 @@ export function getEvaluatedString(
   if (isNoData) {
     return noDataValue;
   }
-  return evaluateString(splitMetricCalculation);
+  return evaluateString(expression);
 }

@@ -1,4 +1,4 @@
-export * from "./getEvaluatedString";
+export * from "./getMetricValueFromExpression";
 export * from "./getMetricValue";
-export * from "./getMetricValueByName";
+export * from "./getMetricValueFromName";
 export * from "./getShowcaseMetricValue";
