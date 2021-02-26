@@ -1,6 +1,6 @@
 import { DataFrame, Field, PanelData } from "@grafana/data";
 
-import { ReducerID } from "./field";
+import { ReducerID } from "../field";
 
 declare const data: PanelData;
 

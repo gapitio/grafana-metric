@@ -1,6 +1,7 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { TIME_FIELD, valueField } from "./field";
+import { TIME_FIELD, valueField } from "../field";
+
 import { getEvaluatedString } from "./getEvaluatedString";
 
 declare global {
