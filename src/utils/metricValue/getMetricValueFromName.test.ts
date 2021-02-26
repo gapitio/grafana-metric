@@ -2,7 +2,7 @@ import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
 import { ReducerID, TIME_FIELD, field, valueField } from "../field";
 
-import { getMetricValueByName } from "./getMetricValueByName";
+import { getMetricValueByName } from "./getMetricValueFromName";
 
 declare global {
   interface Window {

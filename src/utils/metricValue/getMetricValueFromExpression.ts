@@ -1,4 +1,4 @@
-import { getMetricValueByName } from "./getMetricValueByName";
+import { getMetricValueByName } from "./getMetricValueFromName";
 
 /**
  * Evaluates a string

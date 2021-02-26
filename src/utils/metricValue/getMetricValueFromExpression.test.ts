@@ -2,7 +2,7 @@ import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
 import { TIME_FIELD, valueField } from "../field";
 
-import { getEvaluatedString } from "./getEvaluatedString";
+import { getEvaluatedString } from "./getMetricValueFromExpression";
 
 declare global {
   interface Window {
