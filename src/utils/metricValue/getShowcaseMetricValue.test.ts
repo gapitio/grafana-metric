@@ -10,6 +10,8 @@ describe("getShowcaseMetricValue", () => {
   });
   it("retrieves random value", () => {
     expect(getShowcaseMetricValue()).toEqual(500);
-    expect(getShowcaseMetricValue({ range: [0, 10], decimals: 2 })).toEqual(5);
+    expect(
+      getShowcaseMetricValue({ range: { min: 0, max: 10 }, decimals: 2 })
+    ).toEqual(5);
   });
 });

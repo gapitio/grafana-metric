@@ -1,6 +1,7 @@
 import { LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { TIME_FIELD, valueField } from "./field";
+import { TIME_FIELD, valueField } from "../field";
+
 import { getMetricValue } from "./getMetricValue";
 
 declare global {
@@ -47,21 +48,33 @@ describe("getMetricValue", () => {
     jest.spyOn(global.Math, "random").mockRestore();
   });
   it("retrieves random value", () => {
-    expect(getMetricValue("series-2", true)).toEqual(500);
-    expect(getMetricValue("series-2", true, [0, 10], 2)).toEqual(5);
+    expect(getMetricValue("series-2", { showcase: true })).toEqual(500);
+    expect(
+      getMetricValue("series-2", {
+        showcase: true,
+        range: { min: 0, max: 10 },
+        decimals: 2,
+      })
+    ).toEqual(5);
   });
 
   it("retrieves metric value", () => {
     expect(getMetricValue("series-2")).toEqual(200);
-    expect(getMetricValue("series-2", false, [0, 10], 2)).toEqual(200);
+    expect(
+      getMetricValue("series-2", {
+        showcase: false,
+        range: { min: 0, max: 10 },
+        decimals: 2,
+      })
+    ).toEqual(200);
   });
 
   it("returns noDataValue when no value is found", () => {
     expect(getMetricValue("nonExistentName")).toBe(null);
     expect(
-      getMetricValue("nonExistentName", false, [0, 100], 2, "something")
+      getMetricValue("nonExistentName", { noDataValue: "something" })
     ).toBe("something");
-    expect(getMetricValue("minimal", false, [0, 100], 2, "something")).toBe(
+    expect(getMetricValue("minimal", { noDataValue: "something" })).toBe(
       "something"
     );
   });
