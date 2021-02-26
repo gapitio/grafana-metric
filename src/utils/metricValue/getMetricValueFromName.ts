@@ -59,11 +59,23 @@ export function getValueField(fields: Field[]): Field | undefined {
   return fields.find((field) => field.name == "Value");
 }
 
-export interface MetricOptions {
+export interface MetricValueFromNameOptions {
   /**
    * Return value when no data is found.
+   *
+   * @default null
    */
   noDataValue?: unknown;
+
+  /**
+   * The calcs key ("last", "first", "max", ReducerID.min)
+   *
+   * @example
+   * getMetricValueFromName("metric-name", {reducerID: ReducerID.first})
+   *
+   * @default ReducerID.last // "last"
+   */
+  reducerID?: string;
 }
 
 /**
@@ -82,12 +94,15 @@ export interface MetricOptions {
  */
 export function getMetricValueFromName(
   metricName: string,
-  { noDataValue = null }: MetricOptions = {}
+  {
+    noDataValue = null,
+    reducerID = ReducerID.last,
+  }: MetricValueFromNameOptions = {}
 ): unknown {
   const series = getSeriesFromName(metricName);
   const valueField = series
     ? getValueField(series.fields)
     : getFieldFromName(metricName);
 
-  return valueField?.state?.calcs?.[ReducerID.last] ?? noDataValue;
+  return valueField?.state?.calcs?.[reducerID] ?? noDataValue;
 }

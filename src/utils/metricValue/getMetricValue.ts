@@ -1,6 +1,22 @@
 import { getMetricValueFromExpression } from "./getMetricValueFromExpression";
-import { getMetricValueFromName } from "./getMetricValueFromName";
-import { getShowcaseMetricValue } from "./getShowcaseMetricValue";
+import {
+  MetricValueFromNameOptions,
+  getMetricValueFromName,
+} from "./getMetricValueFromName";
+import {
+  ShowcaseMetricValueOptions,
+  getShowcaseMetricValue,
+} from "./getShowcaseMetricValue";
+
+interface MetricValueOptions
+  extends MetricValueFromNameOptions,
+    ShowcaseMetricValueOptions {
+  /**
+   * Decides if values are randomly generated.
+   * Required for range and decimals.
+   */
+  showcase?: boolean;
+}
 
 /**
  * Function provides calculations for grafana queries
@@ -26,23 +42,17 @@ import { getShowcaseMetricValue } from "./getShowcaseMetricValue";
  * getMetricValue("metric-name", true, [1, 10], 4); // Returns random value between 1-10 with 4 decimals.
  *
  * @param metric - String for alias used in grafana query.
- * @param showcase - Decides if values are randomly generated.
- * @param range - Range of values to return (only with showcase)
- * @param decimals - Amount of decimals returned (only with showcase)
- * @param noDataValue - Return value when no data is found.
+ * @param {MetricValueOptions} MetricValueOptions
  */
 export function getMetricValue(
   metric: string,
-  showcase = false,
-  range?: [number, number],
-  decimals?: number,
-  noDataValue: unknown = null
+  { showcase, range, decimals, noDataValue, reducerID }: MetricValueOptions = {}
 ): unknown {
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   } else if (metric.includes('"') || metric.includes("'")) {
-    return getMetricValueFromExpression(metric);
+    return getMetricValueFromExpression(metric, { noDataValue, reducerID });
   }
 
-  return getMetricValueFromName(metric, { noDataValue });
+  return getMetricValueFromName(metric, { noDataValue, reducerID });
 }

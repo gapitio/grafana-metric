@@ -1,13 +1,11 @@
 import { evaluateString } from "../evaluateString";
 
-import { getMetricValueFromName } from "./getMetricValueFromName";
+import {
+  MetricValueFromNameOptions,
+  getMetricValueFromName,
+} from "./getMetricValueFromName";
 
-interface EvaluationOptions {
-  /**
-   * Return value when no data is found.
-   */
-  noDataValue?: unknown;
-}
+export type MetricValueFromExpressionOptions = MetricValueFromNameOptions;
 
 /**
  * Evaluates a metric expression
@@ -19,12 +17,11 @@ interface EvaluationOptions {
  * getMetricValueFromExpression("Math.sqrt('random-metric')") // Returns 10
  *
  * @param {string} metricExpression - The metric expression E.g "random-metric-1"+"random-metric-2"
- * @param {EvaluationOptions} evaluationOptions
- * @return {unknown} Evaluated string
+ * @param {MetricValueFromExpressionOptions} MetricValueFromExpressionOptions
  */
 export function getMetricValueFromExpression(
   metricExpression: string,
-  { noDataValue = null }: EvaluationOptions = {}
+  { noDataValue = null, reducerID }: MetricValueFromExpressionOptions = {}
 ): unknown {
   let isNoData = false;
   // Replace the metric names the with metric value
@@ -32,7 +29,7 @@ export function getMetricValueFromExpression(
     /["']([^"']*)["']/g,
     (metricName) => {
       const value = getMetricValueFromName(metricName.replace(/["']/g, ""), {
-        noDataValue: null,
+        reducerID,
       });
       if (value == null) {
         isNoData = true;

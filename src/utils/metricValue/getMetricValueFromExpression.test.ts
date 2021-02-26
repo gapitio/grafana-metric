@@ -1,6 +1,6 @@
-import { LoadingState, PanelData, dateTime } from "@grafana/data";
+import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { TIME_FIELD, valueField } from "../field";
+import { ReducerID, TIME_FIELD, field, valueField } from "../field";
 
 import { getMetricValueFromExpression } from "./getMetricValueFromExpression";
 
@@ -21,6 +21,18 @@ window.data = {
     {
       name: "series-2",
       fields: [TIME_FIELD, valueField(200)],
+      length: 1,
+    },
+    {
+      name: "series-3",
+      fields: [
+        TIME_FIELD,
+        field({
+          name: "Value",
+          type: FieldType.number,
+          calcs: { [ReducerID.last]: 100, [ReducerID.first]: 500 },
+        }),
+      ],
       length: 1,
     },
   ],
@@ -57,5 +69,13 @@ describe("getMetricValueFromExpression", () => {
         noDataValue: "No data",
       })
     ).toEqual("No data");
+  });
+
+  it("returns value based on reducerID", () => {
+    expect(
+      getMetricValueFromExpression("'series-3' * 2", {
+        reducerID: ReducerID.first,
+      })
+    ).toEqual(1000);
   });
 });

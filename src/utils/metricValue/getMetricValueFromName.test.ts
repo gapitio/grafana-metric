@@ -29,7 +29,7 @@ window.data = {
         field({
           name: "field-1",
           type: FieldType.number,
-          calcs: { [ReducerID.last]: 100 },
+          calcs: { [ReducerID.last]: 100, [ReducerID.first]: 500 },
         }),
         field({
           name: "field-2",
@@ -65,6 +65,17 @@ describe("getMetricValueFromName", () => {
     expect(
       getMetricValueFromName("minimal", { noDataValue: "something" })
     ).toBe("something");
+  });
+
+  describe("reducer id", () => {
+    it("gets last value from field", () => {
+      expect(getMetricValueFromName("field-1")).toBe(100);
+    });
+    it("gets first value from field", () => {
+      expect(
+        getMetricValueFromName("field-1", { reducerID: ReducerID.first })
+      ).toBe(500);
+    });
   });
 
   describe("series name", () => {
