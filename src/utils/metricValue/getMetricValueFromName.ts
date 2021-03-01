@@ -1,47 +1,8 @@
-import { DataFrame, Field, PanelData } from "@grafana/data";
+import { Field } from "@grafana/data";
 
 import { ReducerID } from "../field";
-
-declare const data: PanelData;
-
-/**
- * Gets the series that contains the seriesName
- *
- * @example
- * ```ts
- * getSeriesFromName("series-name");
- * ```
- *
- * @param seriesName
- *
- * @returns The series that contains the seriesName
- */
-export function getSeriesFromName(seriesName: string): DataFrame | undefined {
-  return data.series.find((series) => series.name == seriesName);
-}
-
-/**
- * Gets the field that contains the fieldName
- *
- * @example
- * ```ts
- * getFieldFromName("field-name");
- * ```
- *
- * @param fieldName
- *
- * @returns The field that contains the fieldName
- */
-export function getFieldFromName(fieldName: string): Field | undefined {
-  for (const series of data.series) {
-    const valueField = series.fields.find((field) =>
-      [field.name, ...(field.labels ? [field.labels.name] : [])].includes(
-        fieldName
-      )
-    );
-    if (valueField) return valueField;
-  }
-}
+import { getFieldFromName } from "../getFieldFromName";
+import { getSeriesFromName } from "../getSeriesFromName";
 
 /**
  * Finds the value field
