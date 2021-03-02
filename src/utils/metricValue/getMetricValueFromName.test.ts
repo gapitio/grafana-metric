@@ -6,7 +6,7 @@ import { getMetricValueFromName } from "./getMetricValueFromName";
 
 declare global {
   interface Window {
-    data: PanelData;
+    data?: PanelData;
   }
 }
 

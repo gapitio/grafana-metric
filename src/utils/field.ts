@@ -21,16 +21,18 @@ export const enum ReducerID {
   allIsNull = "allIsNull",
 }
 
+export const TIME_VALUES = [
+  // Epoch timestamps
+  1577836800, // 2020/1/1
+  1593561600, // 2020/7/1
+  1609372800, // 2020/12/31
+];
+
 export const TIME_FIELD = field({
   name: "Time",
   type: FieldType.time,
   calcs: {},
-  values: [
-    // Epoch timestamps
-    1577836800, // 2020/1/1
-    1593561600, // 2020/7/1
-    1609372800, // 2020/12/31
-  ],
+  values: TIME_VALUES,
 });
 
 export function field({
