@@ -20,7 +20,7 @@ interface MetricDataOptions
 }
 
 /**
- * Retrieves metric data (calcs and time)
+ * Gets metric data
  *
  * @param metricName - String for alias used in grafana query.
  * @param {Options} options

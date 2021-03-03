@@ -4,17 +4,34 @@ Retrieves metric value from Grafana's [data interface](https://grafana.com/docs/
 
 ## Usage
 
-### getEvaluatedString
-
-Evaluates a metric string
+The main difference between MetricValue and MetricData is that MetricValue is a single value while MetricData is an object
 
 ```ts
-import { getEvaluatedString } from "@gapit/grafana-metric";
+type MetricValue = unknown;
+
+interface TimeData {
+  first?: unknown;
+  last?: unknown;
+}
+
+interface MetricData {
+  calcs: { [key: string]: unknown };
+  time: TimeData;
+  hasData: boolean;
+}
+```
+
+### getMetricValueFromExpression
+
+Evaluates a metric expression
+
+```ts
+import { getMetricValueFromExpression } from "@gapit/grafana-metric";
 
 // random-metric = 100
 
-getEvaluatedString("'random-metric' * 2"); // Returns 200
-getEvaluatedString("Math.sqrt('random-metric')"); // Returns 10
+getMetricValueFromExpression("'random-metric' * 2"); // Returns 200
+getMetricValueFromExpression("Math.sqrt('random-metric')"); // Returns 10
 ```
 
 ### getShowcaseMetricValue
@@ -25,21 +42,21 @@ Generate a random number
 import { getShowcaseMetricValue } from "@gapit/grafana-metric";
 
 getShowcaseMetricValue(); // Returns a value between 0 and 1000 with 2 decimals
-getShowcaseMetricValue({ range: [x, y], decimals: z }); // Return a random value between x and y with z decimals.
+getShowcaseMetricValue({ range: { min: x, max: y }, decimals: z }); // Return a random value between x and y with z decimals.
 ```
 
-### getMetricValueByName
+### getMetricValueFromName
 
 Gets a metric value by name/alias
 
 ```ts
-import { getMetricValueByName } from "@gapit/grafana-metric";
+import { getMetricValueFromName } from "@gapit/grafana-metric";
 
 // metric-name = 100
 
-getMetricValueByName("metric-name"); // Returns 100
-getMetricValueByName("non-existing-metric"); // Returns null
-getMetricValueByName("non-existing-metric", { noDataValue: "No data" }); // Returns "No data"
+getMetricValueFromName("metric-name"); // Returns 100
+getMetricValueFromName("non-existing-metric"); // Returns null
+getMetricValueFromName("non-existing-metric", { noDataValue: "No data" }); // Returns "No data"
 ```
 
 ### getMetricValue
@@ -51,19 +68,39 @@ import { getMetricValue } from "@gapit/grafana-metric";
 
 // metric-name = 100
 
-// By name
+// From name
 getMetricValue("metric-name"); // Returns 100
 
 // No data
 getMetricValue("non-existing-metric"); // Returns null
-getMetricValue("non-existing-metric", false, [0, 10], 2, "No data"); // Returns "No data"
+getMetricValue("non-existing-metric", { noDataValue: "No data" }); // Returns "No data"
 
 // Evaluation string
 getMetricValue("'metric-name' * 2"); // Returns 200
 getMetricValue("Math.sqrt('metric-name')"); // Returns 10
 
 // Showcase
-getMetricValue("metric-name", true); // Returns a random value between 0 and 1000.
-getMetricValue("metric-name", true, [1, 10]); // Returns random value between 1-10.
-getMetricValue("metric-name", true, [1, 10], 4); // Returns random value between 1-10 with 4 decimals.
+getMetricValue("metric-name", { showcase: true }); // Returns a random value between 0 and 1000.
+getMetricValue("metric-name", { showcase: true, range: { min: 0, max: 10 } }); // Returns random value between 1-10.
+getMetricValue("metric-name", {
+  showcase: true,
+  range: { min: 0, max: 10 },
+  decimals: 4,
+}); // Returns random value between 1-10 with 4 decimals.
 ```
+
+### getMetricDataFromExpression
+
+Evaluates a metric expression
+
+### getShowcaseMetricData
+
+Generates a random metric data object
+
+### getMetricDataFromName
+
+Gets metric data by name/alias
+
+### getMetricData
+
+Gets metric data

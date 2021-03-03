@@ -25,21 +25,25 @@ interface MetricValueOptions
  *
  * // metric-name = 100
  *
- * // By name
- * getMetricValue("metric-name") // Returns 100
+ * // From name
+ * getMetricValue("metric-name"); // Returns 100
  *
  * // No data
- * getMetricValue("non-existing-metric") // Returns null
- * getMetricValue("non-existing-metric", false, [0, 10], 2, "No data") // Returns "No data"
+ * getMetricValue("non-existing-metric"); // Returns null
+ * getMetricValue("non-existing-metric", { noDataValue: "No data" }); // Returns "No data"
  *
  * // Evaluation string
- * getMetricValue("'metric-name' * 2") // Returns 200
- * getMetricValue("Math.sqrt('metric-name')") // Returns 10
+ * getMetricValue("'metric-name' * 2"); // Returns 200
+ * getMetricValue("Math.sqrt('metric-name')"); // Returns 10
  *
  * // Showcase
- * getMetricValue("metric-name", true); // Returns a random value between 0 and 1000.
- * getMetricValue("metric-name", true, [1, 10]); // Returns random value between 1-10.
- * getMetricValue("metric-name", true, [1, 10], 4); // Returns random value between 1-10 with 4 decimals.
+ * getMetricValue("metric-name", { showcase: true }); // Returns a random value between 0 and 1000.
+ * getMetricValue("metric-name", { showcase: true, range: { min: 0, max: 10 } }); // Returns random value between 1-10.
+ * getMetricValue("metric-name", {
+ *   showcase: true,
+ *   range: { min: 0, max: 10 },
+ *   decimals: 4,
+ * }); // Returns random value between 1-10 with 4 decimals.
  *
  * @param metric - String for alias used in grafana query.
  * @param {MetricValueOptions} MetricValueOptions
