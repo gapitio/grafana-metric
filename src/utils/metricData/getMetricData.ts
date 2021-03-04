@@ -1,16 +1,15 @@
-import { getMetricDataFromExpression } from "./getMetricDataFromExpression";
 import {
-  MetricData,
-  MetricDataFromNameOptions,
-  getMetricDataFromName,
-} from "./getMetricDataFromName";
+  getMetricDataFromExpression,
+  MetricDataFromExpressionOptions,
+} from "./getMetricDataFromExpression";
+import { MetricData, getMetricDataFromName } from "./getMetricDataFromName";
 import {
   ShowcaseMetricDataOptions,
   getShowcaseMetricData,
 } from "./getShowcaseMetricData";
 
 interface MetricDataOptions
-  extends MetricDataFromNameOptions,
+  extends MetricDataFromExpressionOptions,
     ShowcaseMetricDataOptions {
   /**
    * Decides if values are randomly generated.
@@ -33,6 +32,7 @@ export function getMetricData(
     showcaseCalcs,
     timeRange,
     decimals,
+    calculateOptions,
   }: MetricDataOptions = {}
 ): MetricData {
   if (showcase) {
@@ -43,7 +43,10 @@ export function getMetricData(
       decimals,
     });
   } else if (metricName.includes('"') || metricName.includes("'")) {
-    return getMetricDataFromExpression(metricName, { reducerIDs });
+    return getMetricDataFromExpression(metricName, {
+      reducerIDs,
+      calculateOptions,
+    });
   }
 
   return getMetricDataFromName(metricName, { reducerIDs });
