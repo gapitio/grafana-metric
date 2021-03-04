@@ -159,7 +159,11 @@ describe("getMetricDataFromExpression", () => {
 
   describe("null values", () => {
     it("calculate null", () => {
-      expect(getMetricDataFromExpression("'series-null' + 2")).toStrictEqual({
+      expect(
+        getMetricDataFromExpression("'series-null' + 2", {
+          calculationOptions: { shouldCalculateNull: true },
+        })
+      ).toStrictEqual({
         calcs: {
           [ReducerID.last]: 2,
           [ReducerID.first]: 2,
@@ -172,11 +176,7 @@ describe("getMetricDataFromExpression", () => {
       });
     });
     it("don't calculate null", () => {
-      expect(
-        getMetricDataFromExpression("'series-null' + 2", {
-          calculationOptions: { shouldCalculateNull: true },
-        })
-      ).toStrictEqual({
+      expect(getMetricDataFromExpression("'series-null' + 2")).toStrictEqual({
         calcs: {
           [ReducerID.last]: null,
           [ReducerID.first]: null,
@@ -192,11 +192,28 @@ describe("getMetricDataFromExpression", () => {
 
   describe("boolean values", () => {
     it("calculate boolean", () => {
+      expect(
+        getMetricDataFromExpression("'series-boolean' + 2", {
+          calculationOptions: { shouldCalculateBoolean: true },
+        })
+      ).toStrictEqual({
+        calcs: {
+          [ReducerID.last]: 3,
+          [ReducerID.first]: 2,
+        },
+        time: {
+          [ReducerID.first]: TIME_VALUES[0],
+          [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
+        },
+        hasData: true,
+      });
+    });
+    it("don't calculate boolean", () => {
       expect(getMetricDataFromExpression("'series-boolean' + 2")).toStrictEqual(
         {
           calcs: {
-            [ReducerID.last]: 3,
-            [ReducerID.first]: 2,
+            [ReducerID.last]: true,
+            [ReducerID.first]: false,
           },
           time: {
             [ReducerID.first]: TIME_VALUES[0],
@@ -205,23 +222,6 @@ describe("getMetricDataFromExpression", () => {
           hasData: true,
         }
       );
-    });
-    it("don't calculate boolean", () => {
-      expect(
-        getMetricDataFromExpression("'series-boolean' + 2", {
-          calculationOptions: { shouldCalculateBoolean: true },
-        })
-      ).toStrictEqual({
-        calcs: {
-          [ReducerID.last]: true,
-          [ReducerID.first]: false,
-        },
-        time: {
-          [ReducerID.first]: TIME_VALUES[0],
-          [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
-        },
-        hasData: true,
-      });
     });
   });
 

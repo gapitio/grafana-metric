@@ -98,8 +98,8 @@ function getCalcs({
 
           const valueType = getType(value);
           if (
-            (valueType == Types.Boolean && shouldCalculateBoolean) ||
-            (valueType == Types.Null && shouldCalculateNull)
+            (valueType == Types.Boolean && !shouldCalculateBoolean) ||
+            (valueType == Types.Null && !shouldCalculateNull)
           )
             alternativeValue = value as boolean | null;
 
