@@ -1,4 +1,4 @@
-import { getType, Types } from "./getType";
+import { Types, getType } from "./getType";
 
 describe("getType", () => {
   it("returns Null", () => {
