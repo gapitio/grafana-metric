@@ -1,14 +1,4 @@
-import { getType } from "./getType";
-
-const enum Types {
-  Null = "Null",
-  Undefined = "Undefined",
-  Boolean = "Boolean",
-  String = "String",
-  Number = "Number",
-  Array = "Array",
-  Object = "Object",
-}
+import { getType, Types } from "./getType";
 
 describe("getType", () => {
   it("returns Null", () => {
