@@ -8,7 +8,7 @@ import {
   getMetricDataFromName,
 } from "./getMetricDataFromName";
 
-export interface CalculateOptions {
+export interface CalculationOptions {
   /**
    * Calculate null values
    *
@@ -59,7 +59,7 @@ export interface CalculateOptions {
 function getCalcs({
   metricExpression,
   metricsData,
-  calculateOptions = {
+  calculationOptions = {
     shouldCalculateNull: false,
     shouldCalculateBoolean: false,
   },
@@ -68,9 +68,9 @@ function getCalcs({
   metricsData: {
     [key: string]: MetricData;
   };
-  calculateOptions?: CalculateOptions;
+  calculationOptions?: CalculationOptions;
 }) {
-  const { shouldCalculateNull, shouldCalculateBoolean } = calculateOptions;
+  const { shouldCalculateNull, shouldCalculateBoolean } = calculationOptions;
 
   // Get all unique calcs keys
   const calcKeys = [
@@ -150,7 +150,7 @@ function getTime({
 
 export interface MetricDataFromExpressionOptions
   extends MetricDataFromNameOptions {
-  calculateOptions?: CalculateOptions;
+  calculationOptions?: CalculationOptions;
 }
 
 /**
@@ -161,7 +161,7 @@ export interface MetricDataFromExpressionOptions
  */
 export function getMetricDataFromExpression(
   metricExpression: string,
-  { reducerIDs, calculateOptions }: MetricDataFromExpressionOptions = {}
+  { reducerIDs, calculationOptions }: MetricDataFromExpressionOptions = {}
 ): MetricData {
   const metricNames = metricExpression.match(/["']([^"']*)["']/g);
 
@@ -177,7 +177,11 @@ export function getMetricDataFromExpression(
 
   if (!metricsData) return { calcs: {}, time: {}, hasData: false };
 
-  const calcs = getCalcs({ metricExpression, metricsData, calculateOptions });
+  const calcs = getCalcs({
+    metricExpression,
+    metricsData,
+    calculationOptions: calculationOptions,
+  });
 
   const hasData = Object.keys(calcs).length > 0;
 

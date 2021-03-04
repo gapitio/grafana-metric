@@ -174,7 +174,7 @@ describe("getMetricDataFromExpression", () => {
     it("don't calculate null", () => {
       expect(
         getMetricDataFromExpression("'series-null' + 2", {
-          calculateOptions: { shouldCalculateNull: true },
+          calculationOptions: { shouldCalculateNull: true },
         })
       ).toStrictEqual({
         calcs: {
@@ -209,7 +209,7 @@ describe("getMetricDataFromExpression", () => {
     it("don't calculate boolean", () => {
       expect(
         getMetricDataFromExpression("'series-boolean' + 2", {
-          calculateOptions: { shouldCalculateBoolean: true },
+          calculationOptions: { shouldCalculateBoolean: true },
         })
       ).toStrictEqual({
         calcs: {

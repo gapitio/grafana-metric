@@ -32,7 +32,7 @@ export function getMetricData(
     showcaseCalcs,
     timeRange,
     decimals,
-    calculateOptions,
+    calculationOptions,
   }: MetricDataOptions = {}
 ): MetricData {
   if (showcase) {
@@ -45,7 +45,7 @@ export function getMetricData(
   } else if (metricName.includes('"') || metricName.includes("'")) {
     return getMetricDataFromExpression(metricName, {
       reducerIDs,
-      calculateOptions,
+      calculationOptions,
     });
   }
 
