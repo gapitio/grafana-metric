@@ -1,5 +1,5 @@
 import { evaluateString } from "../evaluateString";
-import { getType, Types } from "../getType";
+import { Types, getType } from "../getType";
 
 import {
   MetricData,

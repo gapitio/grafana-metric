@@ -1,6 +1,6 @@
 import { FieldType, LoadingState, PanelData, dateTime } from "@grafana/data";
 
-import { ReducerID, TIME_FIELD, field, TIME_VALUES } from "../field";
+import { ReducerID, TIME_FIELD, TIME_VALUES, field } from "../field";
 
 import { getMetricDataFromExpression } from "./getMetricDataFromExpression";
 

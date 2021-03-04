@@ -1,6 +1,6 @@
 import {
-  getMetricDataFromExpression,
   MetricDataFromExpressionOptions,
+  getMetricDataFromExpression,
 } from "./getMetricDataFromExpression";
 import { MetricData, getMetricDataFromName } from "./getMetricDataFromName";
 import {
