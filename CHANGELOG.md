@@ -1,5 +1,6 @@
 # Changelog for grafana-metric
 
+
 ## v1.0.0 (2021/03/05)
 
 ### Features / enhancements
@@ -7,7 +8,7 @@
 - Add reducer ids [#13](https://github.com/gapitio/grafana-metric/pull/13)
 - Add metricData which retrieves multiple calcs (last, min, max, first, ETC) and time [#18](https://github.com/gapitio/grafana-metric/pull/18)
 
-## v0.2.0 (2021/02/05)
+## v0.2.0 (2021/02/24)
 
 ### Features / enhancements
 
