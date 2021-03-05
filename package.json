@@ -23,7 +23,7 @@
     "watch": "rollup -cw"
   },
   "devDependencies": {
-    "@grafana/data": "^7.3.7",
+    "@grafana/data": "~7.3.7",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.20",
