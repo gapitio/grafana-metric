@@ -1,4 +1,5 @@
 import { evaluateString } from "../evaluateString";
+import { Types, getType } from "../getType";
 
 import {
   MetricData,
@@ -7,15 +8,70 @@ import {
   getMetricDataFromName,
 } from "./getMetricDataFromName";
 
+export interface CalculationOptions {
+  /**
+   * Calculate null values
+   *
+   * @description
+   * If multiple metrics are in the same expression
+   * - If set to false and shouldCalculateBoolean is false. The first null/boolean metric is used.
+   * - If set to false and shouldCalculateBoolean is true. The first null metric is used.
+   * - If set to true. The expression is calculated.
+   *
+   * @example
+   * const metricExpression = "'null-series' + 2"
+   *
+   * {null: false};
+   * return null
+   *
+   * {null: true};
+   * return null + 2 // 2
+   *
+   * @default false
+   *
+   */
+  shouldCalculateNull?: boolean;
+
+  /**
+   * Calculate boolean values.
+   *
+   * @description
+   * If multiple metrics are in the same expression
+   * - If set to false and shouldCalculateNull is false. The first boolean/null metric is used.
+   * - If set to false and shouldCalculateNull is true. The first boolean metric is used.
+   * - If set to true. The expression is calculated.
+   *
+   * @example
+   * const metricExpression = "'true-series' + 2"
+   *
+   * {bool: false};
+   * return true
+   *
+   * {bool: true};
+   * return true + 2 // 3
+   *
+   * @default false
+   *
+   */
+  shouldCalculateBoolean?: boolean;
+}
+
 function getCalcs({
   metricExpression,
   metricsData,
+  calculationOptions = {
+    shouldCalculateNull: false,
+    shouldCalculateBoolean: false,
+  },
 }: {
   metricExpression: string;
   metricsData: {
     [key: string]: MetricData;
   };
+  calculationOptions?: CalculationOptions;
 }) {
+  const { shouldCalculateNull, shouldCalculateBoolean } = calculationOptions;
+
   // Get all unique calcs keys
   const calcKeys = [
     ...new Set(
@@ -28,18 +84,35 @@ function getCalcs({
 
   return Object.fromEntries(
     calcKeys.map((calcKey) => {
+      // Used when an expression shouldn't be calculated
+      let alternativeValue: null | boolean | undefined;
+
       const expression = metricExpression.replace(
         /["']([^"']*)["']/g,
         (rawMetricName) => {
+          if (alternativeValue !== undefined) return "";
+
           const metricName = rawMetricName.replace(/["']/g, "");
           const metricData = metricsData[metricName];
           const value = metricData.calcs[calcKey];
+
+          const valueType = getType(value);
+          if (
+            (valueType == Types.Boolean && !shouldCalculateBoolean) ||
+            (valueType == Types.Null && !shouldCalculateNull)
+          )
+            alternativeValue = value as boolean | null;
 
           return String(value);
         }
       );
 
-      return [calcKey, evaluateString(expression)];
+      const value =
+        alternativeValue === undefined
+          ? evaluateString(expression)
+          : alternativeValue;
+
+      return [calcKey, value];
     })
   );
 }
@@ -75,7 +148,10 @@ function getTime({
   );
 }
 
-export type MetricDataFromExpressionOptions = MetricDataFromNameOptions;
+export interface MetricDataFromExpressionOptions
+  extends MetricDataFromNameOptions {
+  calculationOptions?: CalculationOptions;
+}
 
 /**
  * Evaluates a metric expression
@@ -85,7 +161,7 @@ export type MetricDataFromExpressionOptions = MetricDataFromNameOptions;
  */
 export function getMetricDataFromExpression(
   metricExpression: string,
-  { reducerIDs }: MetricDataFromExpressionOptions = {}
+  { reducerIDs, calculationOptions }: MetricDataFromExpressionOptions = {}
 ): MetricData {
   const metricNames = metricExpression.match(/["']([^"']*)["']/g);
 
@@ -101,7 +177,11 @@ export function getMetricDataFromExpression(
 
   if (!metricsData) return { calcs: {}, time: {}, hasData: false };
 
-  const calcs = getCalcs({ metricExpression, metricsData });
+  const calcs = getCalcs({
+    metricExpression,
+    metricsData,
+    calculationOptions: calculationOptions,
+  });
 
   const hasData = Object.keys(calcs).length > 0;
 
