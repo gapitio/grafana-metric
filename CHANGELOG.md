@@ -1,6 +1,5 @@
 # Changelog for grafana-metric
 
-
 ## v1.0.0 (2021/03/05)
 
 ### Features / enhancements
