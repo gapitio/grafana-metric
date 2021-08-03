@@ -1,5 +1,11 @@
 # Changelog for grafana-metric
 
+## v1.0.1 (2021/08/03)
+
+### Features / enhancements
+
+- Fix wrong time returned [#27](https://github.com/gapitio/grafana-metric/pull/27)
+
 ## v1.0.0 (2021/03/05)
 
 ### Features / enhancements
