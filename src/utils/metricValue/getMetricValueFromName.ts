@@ -1,24 +1,5 @@
-import { Field } from "@grafana/data";
-
 import { ReducerID } from "../field";
-import { getFieldFromName } from "../getFieldFromName";
-import { getSeriesFromName } from "../getSeriesFromName";
-
-/**
- * Finds the value field
- *
- * @example
- * ```ts
- * getValueField(series.fields);
- * ```
- *
- * @param fields - Fields object
- *
- * @returns Value field
- */
-export function getValueField(fields: Field[]): Field | undefined {
-  return fields.find((field) => field.name == "Value");
-}
+import { getDataFieldsFromName } from "../getDataFieldsFromName";
 
 export interface MetricValueFromNameOptions {
   /**
@@ -60,10 +41,6 @@ export function getMetricValueFromName(
     reducerID = ReducerID.last,
   }: MetricValueFromNameOptions = {}
 ): unknown {
-  const series = getSeriesFromName(metricName);
-  const valueField = series
-    ? getValueField(series.fields)
-    : getFieldFromName(metricName);
-
+  const { valueField } = getDataFieldsFromName(metricName, { getTime: false });
   return valueField?.state?.calcs?.[reducerID] ?? noDataValue;
 }

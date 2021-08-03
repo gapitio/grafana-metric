@@ -1,13 +1,8 @@
-import { DataFrame } from "@grafana/data";
+import { Field } from "@grafana/data";
 
-import { getFieldFromName } from "../getFieldFromName";
-import { getSeriesFromName } from "../getSeriesFromName";
+import { getDataFieldsFromName } from "../getDataFieldsFromName";
 
-function getTime(series?: DataFrame) {
-  const timeField =
-    series?.fields.find((field) => field.name == "Time") ??
-    getFieldFromName("Time");
-
+function getTime(timeField?: Field) {
   const timeValues = timeField?.values;
   const time = timeValues
     ? {
@@ -20,18 +15,12 @@ function getTime(series?: DataFrame) {
 }
 
 function getCalcs({
-  series,
-  metricName,
+  valueField,
   reducerIDs,
 }: {
-  series?: DataFrame;
-  metricName?: string;
+  valueField?: Field;
   reducerIDs?: string[];
 }) {
-  const valueField =
-    series?.fields.find((field) => field.name == "Value") ??
-    (metricName ? getFieldFromName(metricName) : undefined);
-
   const calcs = valueField?.state?.calcs ?? {};
   const enquiredCalcs =
     reducerIDs?.reduce(
@@ -74,10 +63,11 @@ export function getMetricDataFromName(
   metricName: string,
   { reducerIDs }: MetricDataFromNameOptions = {}
 ): MetricData {
-  const series = getSeriesFromName(metricName);
-  const calcs = getCalcs({ series, metricName, reducerIDs });
+  const { valueField, timeField } = getDataFieldsFromName(metricName);
+
+  const calcs = getCalcs({ valueField, reducerIDs });
   const hasData = Object.keys(calcs).length > 0;
-  const time = hasData ? getTime(series) : {};
+  const time = hasData ? getTime(timeField) : {};
 
   return { calcs, time, hasData };
 }
