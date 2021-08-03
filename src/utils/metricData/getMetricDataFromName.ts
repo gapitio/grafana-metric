@@ -5,8 +5,9 @@ import { getSeriesFromName } from "../getSeriesFromName";
 
 function getTime(series?: DataFrame) {
   const timeField =
-    series?.fields.find((field) => field.name == "Time") ??
-    getFieldFromName("Time");
+    series?.fields.find((field) => field.type == "time") ??
+    getFieldFromName("Time") ??
+    getFieldFromName("time");
 
   const timeValues = timeField?.values;
   const time = timeValues
