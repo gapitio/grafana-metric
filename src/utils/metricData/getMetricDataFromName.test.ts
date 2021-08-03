@@ -327,4 +327,157 @@ describe("getMetricDataFromName", () => {
       });
     });
   });
+
+  describe("timeField name is time", () => {
+    beforeEach(() => {
+      window.data = {
+        state: LoadingState.Done,
+        series: [
+          {
+            name: "series-1",
+            fields: [
+              field({
+                name: "time",
+                type: FieldType.time,
+                calcs: {},
+                values: TIME_VALUES,
+              }),
+              field({
+                name: "Value",
+                type: FieldType.number,
+                calcs: {
+                  [ReducerID.last]: 1000,
+                  [ReducerID.first]: 100,
+                  [ReducerID.max]: 1000,
+                },
+              }),
+            ],
+            length: 1,
+          },
+        ],
+        timeRange: minimalTimeRange,
+      };
+    });
+
+    afterEach(() => {
+      delete window.data;
+    });
+
+    it("get correct time", () => {
+      expect(getMetricDataFromName("series-1")).toStrictEqual({
+        calcs: {
+          [ReducerID.last]: 1000,
+          [ReducerID.first]: 100,
+          [ReducerID.max]: 1000,
+        },
+        time: {
+          [ReducerID.first]: TIME_VALUES[0],
+          [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
+        },
+        hasData: true,
+      });
+    });
+  });
+
+  describe("timeField relies on type", () => {
+    beforeEach(() => {
+      window.data = {
+        state: LoadingState.Done,
+        series: [
+          {
+            name: "series-1",
+            fields: [
+              field({
+                name: "Random",
+                type: FieldType.time,
+                calcs: {},
+                values: TIME_VALUES,
+              }),
+              field({
+                name: "Value",
+                type: FieldType.number,
+                calcs: {
+                  [ReducerID.last]: 1000,
+                  [ReducerID.first]: 100,
+                  [ReducerID.max]: 1000,
+                },
+              }),
+            ],
+            length: 1,
+          },
+        ],
+        timeRange: minimalTimeRange,
+      };
+    });
+
+    afterEach(() => {
+      delete window.data;
+    });
+
+    it("get correct time", () => {
+      expect(getMetricDataFromName("series-1")).toStrictEqual({
+        calcs: {
+          [ReducerID.last]: 1000,
+          [ReducerID.first]: 100,
+          [ReducerID.max]: 1000,
+        },
+        time: {
+          [ReducerID.first]: TIME_VALUES[0],
+          [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
+        },
+        hasData: true,
+      });
+    });
+  });
+
+  describe("timeField with wrong type but correct name", () => {
+    beforeEach(() => {
+      window.data = {
+        state: LoadingState.Done,
+        series: [
+          {
+            name: "series-1",
+            fields: [
+              field({
+                name: "Time",
+                type: FieldType.number,
+                calcs: {},
+                values: TIME_VALUES,
+              }),
+              field({
+                name: "Value",
+                type: FieldType.number,
+                calcs: {
+                  [ReducerID.last]: 1000,
+                  [ReducerID.first]: 100,
+                  [ReducerID.max]: 1000,
+                },
+              }),
+            ],
+            length: 1,
+          },
+        ],
+        timeRange: minimalTimeRange,
+      };
+    });
+
+    afterEach(() => {
+      delete window.data;
+    });
+
+    it("get correct time", () => {
+      expect(getMetricDataFromName("series-1")).toStrictEqual({
+        calcs: {
+          [ReducerID.last]: 1000,
+          [ReducerID.first]: 100,
+          [ReducerID.max]: 1000,
+        },
+        time: {
+          [ReducerID.first]: TIME_VALUES[0],
+          [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
+        },
+        hasData: true,
+      });
+    });
+  });
 });
