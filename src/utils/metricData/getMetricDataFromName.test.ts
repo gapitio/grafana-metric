@@ -100,6 +100,22 @@ describe("getMetricDataFromName", () => {
         state: LoadingState.Done,
         series: [
           {
+            fields: [
+              field({
+                name: "Time",
+                type: FieldType.time,
+                calcs: {},
+                values: [1577736800, 1577936800],
+              }),
+              field({
+                name: "field-0",
+                type: FieldType.number,
+                calcs: { [ReducerID.last]: 100 },
+              }),
+            ],
+            length: 1,
+          },
+          {
             name: "series-1",
             fields: [
               TIME_FIELD,
@@ -147,9 +163,41 @@ describe("getMetricDataFromName", () => {
         series: [
           {
             fields: [
+              field({
+                name: "Time",
+                type: FieldType.time,
+                calcs: {},
+                values: [1577736800, 1577936800],
+              }),
+              field({
+                name: "field-0",
+                type: FieldType.number,
+                calcs: { [ReducerID.last]: 100 },
+              }),
+            ],
+            length: 1,
+          },
+          {
+            fields: [
               TIME_FIELD,
               field({
                 name: "field-1",
+                type: FieldType.number,
+                calcs: { [ReducerID.last]: 100 },
+              }),
+            ],
+            length: 1,
+          },
+          {
+            fields: [
+              field({
+                name: "Time",
+                type: FieldType.time,
+                calcs: {},
+                values: [1577736800, 1577936800],
+              }),
+              field({
+                name: "field-2",
                 type: FieldType.number,
                 calcs: { [ReducerID.last]: 100 },
               }),
@@ -182,6 +230,22 @@ describe("getMetricDataFromName", () => {
       window.data = {
         state: LoadingState.Done,
         series: [
+          {
+            fields: [
+              field({
+                name: "Time",
+                type: FieldType.time,
+                calcs: {},
+                values: [1577736800, 1577936800],
+              }),
+              field({
+                name: "field-0",
+                type: FieldType.number,
+                calcs: { [ReducerID.last]: 100 },
+              }),
+            ],
+            length: 1,
+          },
           {
             fields: [
               TIME_FIELD,
