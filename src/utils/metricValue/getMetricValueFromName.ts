@@ -1,5 +1,21 @@
+import { Field, Vector } from "@grafana/data";
+
 import { ReducerID } from "../field";
 import { getDataFieldsFromName } from "../getDataFieldsFromName";
+
+export function getValue(
+  valueField: Field<unknown, Vector<unknown>> | undefined,
+  reducerID: string
+): unknown | null {
+  const length = valueField?.values.length;
+  if (!length) return null;
+
+  if (reducerID === "first" || reducerID === "last") {
+    const index = reducerID === "first" ? 0 : length - 1;
+    const value = valueField?.values.get(index);
+    return value;
+  }
+}
 
 export interface MetricValueFromNameOptions {
   /**
@@ -42,5 +58,8 @@ export function getMetricValueFromName(
   }: MetricValueFromNameOptions = {}
 ): unknown {
   const { valueField } = getDataFieldsFromName(metricName, { getTime: false });
-  return valueField?.state?.calcs?.[reducerID] ?? noDataValue;
+  const value =
+    valueField?.state?.calcs?.[reducerID] ?? getValue(valueField, reducerID);
+
+  return value ?? noDataValue;
 }

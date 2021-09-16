@@ -363,7 +363,7 @@ describe("getMetricDataFromName", () => {
       delete window.data;
     });
 
-    it("get correct time", () => {
+    it("gets correct time", () => {
       expect(getMetricDataFromName("series-1")).toStrictEqual({
         calcs: {
           [ReducerID.last]: 1000,
@@ -414,7 +414,7 @@ describe("getMetricDataFromName", () => {
       delete window.data;
     });
 
-    it("get correct time", () => {
+    it("gets correct time", () => {
       expect(getMetricDataFromName("series-1")).toStrictEqual({
         calcs: {
           [ReducerID.last]: 1000,
@@ -465,7 +465,7 @@ describe("getMetricDataFromName", () => {
       delete window.data;
     });
 
-    it("get correct time", () => {
+    it("gets correct time", () => {
       expect(getMetricDataFromName("series-1")).toStrictEqual({
         calcs: {
           [ReducerID.last]: 1000,
@@ -478,6 +478,46 @@ describe("getMetricDataFromName", () => {
         },
         hasData: true,
       });
+    });
+  });
+});
+
+describe("missing calcs", () => {
+  beforeEach(() => {
+    window.data = {
+      state: LoadingState.Done,
+      series: [
+        {
+          fields: [
+            TIME_FIELD,
+            field({
+              name: "series-1",
+              type: FieldType.number,
+              values: [1000, 500, 300],
+            }),
+          ],
+          length: 1,
+        },
+      ],
+      timeRange: minimalTimeRange,
+    };
+  });
+
+  afterEach(() => {
+    delete window.data;
+  });
+
+  it("gets correct value", () => {
+    expect(getMetricDataFromName("series-1")).toStrictEqual({
+      calcs: {
+        [ReducerID.last]: 300,
+        [ReducerID.first]: 1000,
+      },
+      time: {
+        [ReducerID.first]: TIME_VALUES[0],
+        [ReducerID.last]: TIME_VALUES[TIME_VALUES.length - 1],
+      },
+      hasData: true,
     });
   });
 });

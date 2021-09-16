@@ -45,6 +45,17 @@ window.data = {
       ],
       length: 1,
     },
+    {
+      fields: [
+        TIME_FIELD,
+        field({
+          name: "random-value-field",
+          type: FieldType.number,
+          values: [1000, 500, 300],
+        }),
+      ],
+      length: 1,
+    },
   ],
   timeRange: {
     from: dateTime(0),
@@ -93,6 +104,17 @@ describe("getMetricValueFromName", () => {
   describe("label name", () => {
     it("gets correct value from label name", () => {
       expect(getMetricValueFromName("label-1")).toEqual(300);
+    });
+  });
+
+  describe("missing calcs", () => {
+    it("gets correct value from label name", () => {
+      expect(getMetricValueFromName("random-value-field")).toEqual(300);
+      expect(
+        getMetricValueFromName("random-value-field", {
+          reducerID: ReducerID.first,
+        })
+      ).toEqual(1000);
     });
   });
 });

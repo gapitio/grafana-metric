@@ -44,7 +44,7 @@ export function field({
 }: {
   name: string;
   type: FieldType;
-  calcs: FieldCalcs;
+  calcs?: FieldCalcs;
   labels?: Labels;
   values?: number[];
 }): Field {
