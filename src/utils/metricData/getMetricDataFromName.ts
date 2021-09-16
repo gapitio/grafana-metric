@@ -1,6 +1,7 @@
 import { Field } from "@grafana/data";
 
 import { getDataFieldsFromName } from "../getDataFieldsFromName";
+import { getValue } from "../metricValue";
 
 function getTime(timeField?: Field) {
   const timeValues = timeField?.values;
@@ -22,6 +23,17 @@ function getCalcs({
   reducerIDs?: string[];
 }) {
   const calcs = valueField?.state?.calcs ?? {};
+
+  if (calcs.last === undefined) {
+    const value = getValue(valueField, "last");
+    if (value) calcs.last = value;
+  }
+
+  if (calcs.first === undefined) {
+    const value = getValue(valueField, "first");
+    if (value) calcs.first = value;
+  }
+
   const enquiredCalcs =
     reducerIDs?.reduce(
       (obj: { [key: string]: unknown }, key) => ((obj[key] = calcs[key]), obj),
