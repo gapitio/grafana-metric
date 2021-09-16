@@ -1,8 +1,14 @@
 # Changelog for grafana-metric
 
-## v1.0.1 (2021/08/03)
+## v1.1.0 (2021/08/03)
 
 ### Features / enhancements
+
+- Use values if calcs is missing [#28](https://github.com/gapitio/grafana-metric/pull/28)
+
+## v1.0.1 (2021/08/03)
+
+### Bug fixes
 
 - Fix wrong time returned [#27](https://github.com/gapitio/grafana-metric/pull/27)
 
