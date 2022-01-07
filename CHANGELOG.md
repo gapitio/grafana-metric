@@ -1,5 +1,11 @@
 # Changelog for grafana-metric
 
+## v1.1.1 (2022/01/07)
+
+### Features / enhancements
+
+- Check if field contains displayName if name fails [#29](https://github.com/gapitio/grafana-metric/pull/29)
+
 ## v1.1.0 (2021/08/03)
 
 ### Features / enhancements

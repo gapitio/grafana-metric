@@ -41,12 +41,14 @@ export function field({
   calcs,
   labels,
   values = [],
+  displayName = null,
 }: {
   name: string;
   type: FieldType;
   calcs?: FieldCalcs;
   labels?: Labels;
   values?: number[];
+  displayName?: string | null;
 }): Field {
   return {
     name,
@@ -61,7 +63,7 @@ export function field({
       toArray: () => values,
     },
     state: {
-      displayName: null,
+      displayName,
       scopedVars: {},
       calcs,
     },
