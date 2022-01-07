@@ -27,6 +27,7 @@ function getValueField(
   return series.fields.find((field) =>
     [
       field.name,
+      field.state?.displayName,
       ...(searchLabels && field.labels ? [field.labels.name] : []),
     ].includes(name)
   );
