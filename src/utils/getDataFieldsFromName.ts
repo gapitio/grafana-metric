@@ -77,7 +77,7 @@ function getSeriesAndValueField(
 export function getDataFieldsFromName(
   name: string,
   { searchLabels = true, getTime = true }: DataFieldOptions = {}
-): DataFields | Record<string, never> {
+): DataFields {
   const { series, valueField } = getSeriesAndValueField(name, { searchLabels });
   if (series && valueField)
     return {
