@@ -4,9 +4,7 @@ import { getShowcaseMetricValue } from "../metricValue/getShowcaseMetricValue";
 
 declare const data: PanelData;
 
-function getMultipleSeriesFromName(
-  seriesName: string
-): DataFrame[] {
+function getMultipleSeriesFromName(seriesName: string): DataFrame[] {
   return data.series.filter((series) => series.name === seriesName);
 }
 
@@ -22,10 +20,7 @@ function getValueFieldsFromSeries(series: DataFrame[], fieldName: string) {
 
 function getValueFieldsFromName(metricName: string, fieldName: string) {
   const series = getMultipleSeriesFromName(metricName);
-  if (series) {
-    return getValueFieldsFromSeries(series, fieldName);
-  }
-  return null;
+  return getValueFieldsFromSeries(series, fieldName);
 }
 
 function getValueFieldFromLabels(
@@ -39,18 +34,24 @@ function getValueFieldFromLabels(
   );
 }
 
-function getMetricSeries(
-  metricName: string,
-  fieldName: string,
-  labels: Record<string, string>
-) {
-  const valueFields = getValueFieldsFromName(metricName, fieldName);
-  if (valueFields) {
-    const valueField = getValueFieldFromLabels(valueFields, labels);
-    const length = valueField?.values.length;
-    return length ? valueField.values.get(length - 1) : null;
+function getMetricSeries({
+  seriesName,
+  fieldName,
+  labels,
+  noDataValue,
+}: {
+  seriesName: string;
+  fieldName: string;
+  labels: Record<string, string>;
+  noDataValue: unknown;
+}) {
+  const valueFields = getValueFieldsFromName(seriesName, fieldName);
+  const valueField = getValueFieldFromLabels(valueFields, labels);
+  if (valueField) {
+    const length = valueField.values.length;
+    return length !== 0 ? valueField.values.get(length - 1) : noDataValue;
   }
-  return null;
+  return noDataValue;
 }
 
 /**
@@ -95,6 +96,7 @@ export function getMetricValueWithFilters({
   showcase,
   range,
   decimals,
+  noDataValue = null,
 }: {
   seriesName: string;
   fieldName?: string;
@@ -102,9 +104,10 @@ export function getMetricValueWithFilters({
   showcase?: boolean;
   range?: { min: number; max: number };
   decimals?: number;
+  noDataValue?: unknown;
 }): unknown {
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   }
-  return getMetricSeries(seriesName, fieldName, labels);
+  return getMetricSeries({ seriesName, fieldName, labels, noDataValue });
 }

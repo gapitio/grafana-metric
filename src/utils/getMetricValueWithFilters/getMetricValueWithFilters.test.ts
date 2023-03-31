@@ -145,7 +145,7 @@ describe("getMetricValue", () => {
     ).toEqual(300);
   });
 
-  it("retrieves undefined when no match is found", () => {
+  it("retrieves null when no match is found", () => {
     expect(
       getMetricValueWithFilters({
         seriesName: "series-4",
@@ -155,7 +155,7 @@ describe("getMetricValue", () => {
     ).toEqual(null);
   });
 
-  it("retrieves undefined when including existing and nonexisting labels", () => {
+  it("retrieves null when including existing and nonexisting labels", () => {
     expect(
       getMetricValueWithFilters({
         seriesName: "series-3",
@@ -163,6 +163,17 @@ describe("getMetricValue", () => {
         labels: { label3: "label3", nonExistent: "nonExistent" },
       })
     ).toEqual(null);
+  });
+
+  it("retrieves 'No data' when including noDataValue = 'No data'", () => {
+    expect(
+      getMetricValueWithFilters({
+        seriesName: "series-3",
+        fieldName: "FieldName",
+        labels: { label3: "label3", nonExistent: "nonExistent" },
+        noDataValue: "No data",
+      })
+    ).toEqual("No data");
   });
 
   it("retrieves correct metric value when multiple labels", () => {
