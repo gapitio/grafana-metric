@@ -73,7 +73,7 @@ function getMetricSeries(
  *
  * // Showcase
  * getMetricValueWithFilters({ seriesName: "series-1", showcase: true }) // Returns a random value between 0 and 1000.
- * 
+ *
  * getMetricValueWithFilters({
     seriesName: "series-1",
     showcase: true,
