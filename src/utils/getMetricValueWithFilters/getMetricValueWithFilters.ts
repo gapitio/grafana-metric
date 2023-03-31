@@ -81,7 +81,7 @@ function getMetricSeries(
     decimals: 2,
   }) // Returns random value between 1-10.
  *
- * @param seriesName - String for identifying correct series in Grafanas data object.
+ * @param seriesName - String for identifying correct series in Grafana's data object.
  * @param fieldName - String for identifying correct field in series(Defaults to "Value").
  * @param labels - Object for filtering a specific series when multiple series have the same seriesName.
  * @param showcase - Boolean for returning random showcase value.
