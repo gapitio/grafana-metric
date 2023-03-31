@@ -6,7 +6,7 @@ declare const data: PanelData;
 
 function getMultipleSeriesFromName(
   seriesName: string
-): DataFrame[] | undefined {
+): DataFrame[] {
   return data.series.filter((series) => series.name === seriesName);
 }
 
