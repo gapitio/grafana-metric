@@ -1,6 +1,6 @@
 # Changelog for grafana-metric
 
-## v1.2.0 (2023/03/13)
+## Unreleased
 
 ### Features / enhancements
 
