@@ -59,7 +59,7 @@ function getMetricSeries(
  * @example
  *
  * getMetricValueWithFilters({seriesName: "series-1"}); // Returns first series with name "series-1".
- * 
+ *
  * getMetricValueWithFilters({
      seriesName: "series-1",
      fieldName: "field-1",
