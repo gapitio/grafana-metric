@@ -1,5 +1,6 @@
-import { DataFrame, Field, PanelData } from "@grafana/data";
+import { DataFrame, Field, PanelData, ReducerID } from "@grafana/data";
 
+import { getValue } from "../metricValue";
 import { getShowcaseMetricValue } from "../metricValue/getShowcaseMetricValue";
 
 declare const data: PanelData;
@@ -39,19 +40,19 @@ function getMetricSeries({
   fieldName,
   labels,
   noDataValue,
+  reducerID,
 }: {
   seriesName: string;
   fieldName: string;
   labels: Record<string, string>;
   noDataValue: unknown;
+  reducerID: string;
 }) {
   const valueFields = getValueFieldsFromName(seriesName, fieldName);
   const valueField = getValueFieldFromLabels(valueFields, labels);
-  if (valueField) {
-    const length = valueField.values.length;
-    return length !== 0 ? valueField.values.get(length - 1) : noDataValue;
-  }
-  return noDataValue;
+  const value =
+    valueField?.state?.calcs?.[reducerID] ?? getValue(valueField, reducerID);
+  return value ?? noDataValue;
 }
 
 /**
@@ -97,6 +98,7 @@ export function getMetricValueWithFilters({
   range,
   decimals,
   noDataValue = null,
+  reducerID = ReducerID.last,
 }: {
   seriesName: string;
   fieldName?: string;
@@ -105,9 +107,16 @@ export function getMetricValueWithFilters({
   range?: { min: number; max: number };
   decimals?: number;
   noDataValue?: unknown;
+  reducerID?: string;
 }): unknown {
   if (showcase) {
     return getShowcaseMetricValue({ range, decimals });
   }
-  return getMetricSeries({ seriesName, fieldName, labels, noDataValue });
+  return getMetricSeries({
+    seriesName,
+    fieldName,
+    labels,
+    noDataValue,
+    reducerID,
+  });
 }

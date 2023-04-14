@@ -78,6 +78,19 @@ window.data = {
       ],
       length: 1,
     },
+    {
+      name: "series-12",
+      fields: [
+        TIME_FIELD,
+        field({
+          name: "FieldName",
+          type: FieldType.number,
+          values: [100, 200, 300, 400, 500],
+          labels: { label3: "label3", label4: "second" },
+        }),
+      ],
+      length: 5,
+    },
   ],
   timeRange: {
     from: dateTime(0),
@@ -189,6 +202,25 @@ describe("getMetricValue", () => {
         seriesName: "series-3",
         fieldName: "FieldName",
         labels: { label3: "label3", label4: "second" },
+      })
+    ).toEqual(500);
+  });
+
+  it("retrieves correct metric value with reducerId", () => {
+    expect(
+      getMetricValueWithFilters({
+        seriesName: "series-12",
+        fieldName: "FieldName",
+        labels: { label3: "label3" },
+        reducerID: "first",
+      })
+    ).toEqual(100);
+    expect(
+      getMetricValueWithFilters({
+        seriesName: "series-12",
+        fieldName: "FieldName",
+        labels: { label3: "label3" },
+        reducerID: "last",
       })
     ).toEqual(500);
   });
