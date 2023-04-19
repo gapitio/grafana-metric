@@ -1,5 +1,6 @@
-import { DataFrame, Field, PanelData, ReducerID } from "@grafana/data";
+import { DataFrame, Field, PanelData } from "@grafana/data";
 
+import { ReducerID } from "../field";
 import { getValue } from "../metricValue";
 import { getShowcaseMetricValue } from "../metricValue/getShowcaseMetricValue";
 
