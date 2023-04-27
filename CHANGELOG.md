@@ -1,5 +1,11 @@
 # Changelog for grafana-metric
 
+## Unreleased
+
+### Features / enhancements
+
+- Add method to filter by series name, field name and multiple labels [#35](https://github.com/gapitio/grafana-metric/pull/35)
+
 ## v1.1.1 (2022/01/07)
 
 ### Features / enhancements
