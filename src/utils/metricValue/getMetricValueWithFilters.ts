@@ -1,8 +1,9 @@
 import { DataFrame, Field, PanelData } from "@grafana/data";
 
 import { ReducerID } from "../field";
-import { getValue } from "../metricValue";
-import { getShowcaseMetricValue } from "../metricValue/getShowcaseMetricValue";
+
+import { getValue } from "./getMetricValueFromName";
+import { getShowcaseMetricValue } from "./getShowcaseMetricValue";
 
 declare const data: PanelData;
 
